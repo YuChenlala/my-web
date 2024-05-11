@@ -1,0 +1,18 @@
+.draggable-divider-container {
+    position: relative;
+    display: flex;
+    flex-direction: row; /* 或 'column'，根据你的布局方向 */
+    width: 100%;
+    height: 100%;
+  }
+  
+  .draggable-divider {
+    background-color: #ccc;
+    cursor: col-resize; /* 或 'row-resize'，根据你的布局方向 */
+    transition: background-color 0.3s;
+  }
+  
+  .draggable-divider.dragging {
+    background-color: #aaa;
+  }
+  

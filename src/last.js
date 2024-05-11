@@ -22,7 +22,7 @@ import {
 import { FloatButton } from 'antd';
 import Draggable from 'react-draggable'; // react拖拽功能
 import DraggableDivider from  './components/DraggableDivider'
-import { SideSheet, Upload, Spin,Card ,Slider,InputNumber } from '@douyinfe/semi-ui';
+import { SideSheet, Upload, Spin,Card } from '@douyinfe/semi-ui';
 import { IconPlus ,IconEdit,IconFontColor,IconMark} from '@douyinfe/semi-icons';
 import ImageAnnotator from './components/ImageAnnotator';
 import html2canvas from 'html2canvas';
@@ -300,17 +300,19 @@ const App = () => {
                                 const html = text.replace(regex, `<table height='${height}px' width='${width}px' border='1' >`);
                                 console.log(html);
                                 renderedText = html;
-                                const fontSize = newHeight ;
+                                const fontSize = newHeight/1.3 ;
                                 style =`  position: absolute; top: ${position[0][1] * picRatio*editableRef.current.clientWidth}px; left: ${position[0][0] * 100}%; width:${width}px;font-size: ${fontSize}px`;
-                            }else if(type == 'text'){
-                                var fontSize = (position[0][1]-position[3][1])*picRatio*editableRef.current.clientWidth;
-                                style =`  position: absolute; top: ${position[0][1] * picRatio*editableRef.current.clientWidth}px; left: ${position[0][0] * 100}%;font-size: ${fontSize}px`;
-                                renderedText = text
-                                
                             }else{
-                                style =`  position: absolute; top: ${position[0][1] * picRatio*editableRef.current.clientWidth}px; left: ${position[0][0] * 100}%;`;
+                                var fontSize = (position[3][1]-position[0][1])*picRatio*editableRef.current.clientWidth;
+                                fontSize = fontSize/1.3
+                                if (type == 'formula'){
+                                    style =`  position: absolute; top: ${position[0][1] * picRatio*editableRef.current.clientWidth}px; left: ${position[0][0] * 100}%;`;
+                                }else{
+                                    style =`  position: absolute; top: ${position[0][1] * picRatio*editableRef.current.clientWidth}px; left: ${position[0][0] * 100}%;`;
+                                }
                                 renderedText =  renderLaTeX(text);
                             }
+                            fontSize = (position[0][1]-position[3][1])*picRatio*editableRef.current.clientWidth;
                             // return `<div style="${style}" data-type="${type}">${renderedText}</div>`;
                             if (index ==   flag3){
                                 return `<div style="color: red; ${style} ;" data-type="${type}">
@@ -399,17 +401,19 @@ const App = () => {
                     const html = text.replace(regex, `<table height='${height}px' width='${width}px' border='1' >`);
                     console.log(html);
                     renderedText = html;
-                    const fontSize = newHeight ;
+                    const fontSize = newHeight/1.3 ;
                     style =`  position: absolute; top: ${position[0][1] * picRatio*editableRef.current.clientWidth}px; left: ${position[0][0] * 100}%; width:${width}px;font-size: ${fontSize}px`;
-                }else if(type == 'text'){
-                    var fontSize = (position[0][1]-position[3][1])*picRatio*editableRef.current.clientWidth;
-                    style =`  position: absolute; top: ${position[0][1] * picRatio*editableRef.current.clientWidth}px; left: ${position[0][0] * 100}%;font-size: ${fontSize}px`;
-                    renderedText = text
-                    
                 }else{
-                    style =`  position: absolute; top: ${position[0][1] * picRatio*editableRef.current.clientWidth}px; left: ${position[0][0] * 100}%;`;
+                    var fontSize = (position[3][1]-position[0][1])*picRatio*editableRef.current.clientWidth;
+                    fontSize = fontSize/1.3
+                    if (type == 'formula'){
+                        style =`  position: absolute; top: ${position[0][1] * picRatio*editableRef.current.clientWidth}px; left: ${position[0][0] * 100}%;`;
+                    }else{
+                        style =`  position: absolute; top: ${position[0][1] * picRatio*editableRef.current.clientWidth}px; left: ${position[0][0] * 100}%;`;
+                    }
                     renderedText =  renderLaTeX(text);
                 }
+                fontSize = (position[0][1]-position[3][1])*picRatio*editableRef.current.clientWidth;
                 // return `<div style="${style}" data-type="${type}">${renderedText}</div>`;
                 if (index ==    highlightIndex ){
                     return `<div style="color: red; ${style} ;" data-type="${type}">
@@ -448,17 +452,19 @@ const App = () => {
                 const html = text.replace(regex, `<table height='${height}px' width='${width}px' border='1' >`);
                 console.log(html);
                 renderedText = html;
-                const fontSize = newHeight ;
+                const fontSize = newHeight/1.3 ;
                 style =`  position: absolute; top: ${position[0][1] * picRatio*editableRef.current.clientWidth}px; left: ${position[0][0] * 100}%; width:${width}px;font-size: ${fontSize}px`;
-            }else if(type == 'text'){
-                var fontSize = (position[0][1]-position[3][1])*picRatio*editableRef.current.clientWidth;
-                style =`  position: absolute; top: ${position[0][1] * picRatio*editableRef.current.clientWidth}px; left: ${position[0][0] * 100}%;font-size: ${fontSize}px`;
-                renderedText = text
-                
             }else{
-                style =`  position: absolute; top: ${position[0][1] * picRatio*editableRef.current.clientWidth}px; left: ${position[0][0] * 100}%;`;
+                var fontSize = (position[3][1]-position[0][1])*picRatio*editableRef.current.clientWidth;
+                fontSize = fontSize/1.3
+                if (type == 'formula'){
+                    style =`  position: absolute; top: ${position[0][1] * picRatio*editableRef.current.clientWidth}px; left: ${position[0][0] * 100}%;`;
+                }else{
+                    style =`  position: absolute; top: ${position[0][1] * picRatio*editableRef.current.clientWidth}px; left: ${position[0][0] * 100}%;`;
+                }
                 renderedText =  renderLaTeX(text);
             }
+            fontSize = (position[0][1]-position[3][1])*picRatio*editableRef.current.clientWidth;
             // return `<div style="${style}" data-type="${type}">${renderedText}</div>`;
             return `<div style="${style} ;" data-type="${type}">${renderedText}</div>`;
             
@@ -470,14 +476,6 @@ const App = () => {
         // 在这里可以执行与htmlContent有关的其他逻辑
     }, [htmlContent]);
     
-    useEffect(() => {
-        if(currentIndex!=-1 &&dataList[currentIndex].data!==undefined){
-            setModel1(1);
-            drawImageAndRectangle(file[currentIndex], dataList[currentIndex].data, 1);
-        }
-    }, [confidenceThres]);
-
-
     // 处理内容编辑完成后的事件
     const handleBlur = () => {
         // 获取可编辑元素的当前内容
@@ -512,7 +510,7 @@ const App = () => {
                 console.log("formula:",element.innerText);
                 text = ocrData[index].text;
             } else {
-                text = element.innerText; // 这里的 Text 是你原来代码中的变量，保留了原逻辑
+                text = Text; // 这里的 Text 是你原来代码中的变量，保留了原逻辑
             }
             const score = ocrData[index].score;
             return { position, text, type,score };
@@ -756,7 +754,7 @@ const App = () => {
         //     formData.append('image', blob);
         // }
         try {
-            fetch('https://8eb3-222-212-86-164.ngrok-free.app/one-image', {
+            fetch(' http://127.0.0.1:5000/one-image', {
                 method: 'POST',
                 body: formData,
                 mode: 'cors',
@@ -822,8 +820,8 @@ const App = () => {
         try {
             //  http://127.0.0.1:5000/upload
             // https://7916-211-83-127-29.ngrok-free.app/one-image
-            fetch('http://127.0.0.1:5000/one-image', {
-                method: 'POST', 
+            fetch('https://8026-222-212-86-164.ngrok-free.app/one-image', {
+                method: 'POST',
                 body: formData,
                 mode: 'cors',
             })
@@ -883,6 +881,8 @@ const App = () => {
     // 监测dataList的变化以获取数据之后更新版面还原信息
     useEffect(() => {
         setDataListLoading(false);
+        console.log("监测到dataListLoading变化")
+        console.log("dddddd", dataList)
         if(currentIndex!=-1 && currentIndex<file.length && dataList[currentIndex].data!==undefined) {
             const image = new Image();
             image.src =file[currentIndex].url;
@@ -1338,9 +1338,7 @@ const App = () => {
                                 <Tooltip title='添加新的文本信息' arrow>
                                     <Button type="secondary"onClick={handleAdd} title='添加新的文本信息' style={{backgroundColor:'white'}}><div style={{fontSize: '25px'}}><IconPlus size='extra large' /></div></Button>
                                 </Tooltip>
-                                {/* <Tooltip title='置信度阈值:0-1之间' arrow  
-                                        onMouseDown={(e) => e.stopPropagation()}
-                                        onTouchStart={(e) => e.stopPropagation()}>
+                                <Tooltip title='置信度阈值:0-1之间' arrow>
                                     <input
                                         id="inputValue"
                                         defaultValue=""
@@ -1358,16 +1356,7 @@ const App = () => {
                                         onChange={saveInputValue}
                                         value={confidenceThres}
                                     />
-                                    
-                                </Tooltip> */}
-                                <div style={{ width: 200, marginRight: 15 }} onMouseDown={(e) => e.stopPropagation()}
-                                        onTouchStart={(e) => e.stopPropagation()}>
-                                        <Slider tipFormatter={v => (`置信度${v}%`)} getAriaValueText={v => (`${v}%`)} onChange={value=>setconfidenceThres(value/100)}/>
-                                </div>
-                                <Tooltip title='置信度阈值:0-1之间' arrow>
-                                <InputNumber onChange={(v) => setconfidenceThres(v/100)} style={{ width: 100 }} value={confidenceThres*100} min={0} max={100} />
                                 </Tooltip>
-                                
                                 <Tooltip title='导出为png/jpg' arrow>
                                     <Button type="secondary" onClick={downloadPDFFile} style={{ marginLeft: '100px', backgroundColor:'white'}}>
                                         <div style={{fontSize: '25px'}}><FileImageOutlined /></div>

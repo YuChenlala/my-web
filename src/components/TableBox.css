@@ -1,0 +1,74 @@
+.App {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  
+  .header {
+    text-align: center;
+    padding: 20px;
+    font-size: 24px;
+    border-bottom: 2px solid #ccc;
+  }
+  
+  .container {
+    display: flex;
+    flex: 1;
+  }
+  
+  .left-panel {
+    flex: 50%;
+  }
+  
+  .right-panel {
+    flex: 50%;
+    border-left: 2px solid #ccc;
+    padding: 20px;
+  }
+  
+  .table-container {
+    overflow: auto;
+  }
+  
+  table {
+    border: 1px solid #605f5f;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    border: 1px solid #221b1b;
+    padding: 0px;
+  }
+  .button-container {
+    text-align: center;
+    margin-top: 20px;
+    padding-bottom: 20px;
+  }
+  
+  .button-container button {
+    margin: 0 10px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .button-container button:hover {
+    background-color: #0056b3;
+  }
+  .bottom-buttons {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #fff;
+    padding: 10px;
+    text-align: center;
+  }
+  .new-column {
+    width: 50px; /* 璁剧疆鏂版坊鍔犲垪鐨勫�藉害 */
+  }
+  

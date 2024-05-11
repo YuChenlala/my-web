@@ -22,7 +22,7 @@ import {
 import { FloatButton } from 'antd';
 import Draggable from 'react-draggable'; // react拖拽功能
 import DraggableDivider from  './components/DraggableDivider'
-import { SideSheet, Upload, Spin,Card ,Slider,InputNumber } from '@douyinfe/semi-ui';
+import { SideSheet, Upload, Spin,Card } from '@douyinfe/semi-ui';
 import { IconPlus ,IconEdit,IconFontColor,IconMark} from '@douyinfe/semi-icons';
 import ImageAnnotator from './components/ImageAnnotator';
 import html2canvas from 'html2canvas';
@@ -470,14 +470,6 @@ const App = () => {
         // 在这里可以执行与htmlContent有关的其他逻辑
     }, [htmlContent]);
     
-    useEffect(() => {
-        if(currentIndex!=-1 &&dataList[currentIndex].data!==undefined){
-            setModel1(1);
-            drawImageAndRectangle(file[currentIndex], dataList[currentIndex].data, 1);
-        }
-    }, [confidenceThres]);
-
-
     // 处理内容编辑完成后的事件
     const handleBlur = () => {
         // 获取可编辑元素的当前内容
@@ -672,7 +664,7 @@ const App = () => {
                     for (let pageNumber = 1; pageNumber <= numPages; pageNumber++) {
                         const page = await pdf.getPage(pageNumber); // 获取PDF的每一页
                     
-                        const viewport = page.getViewport({ scale: 1.5 }); // 获取页面的视口
+                        const viewport = page.getViewport({ scale: 1 }); // 获取页面的视口
                     
                         const canvas = document.createElement('canvas'); // 创建canvas元素
                         const context = canvas.getContext('2d'); // 获取2d绘图上下文
@@ -756,7 +748,7 @@ const App = () => {
         //     formData.append('image', blob);
         // }
         try {
-            fetch('https://8eb3-222-212-86-164.ngrok-free.app/one-image', {
+            fetch(' http://127.0.0.1:5000/one-image', {
                 method: 'POST',
                 body: formData,
                 mode: 'cors',
@@ -823,7 +815,7 @@ const App = () => {
             //  http://127.0.0.1:5000/upload
             // https://7916-211-83-127-29.ngrok-free.app/one-image
             fetch('http://127.0.0.1:5000/one-image', {
-                method: 'POST', 
+                method: 'POST',
                 body: formData,
                 mode: 'cors',
             })
@@ -883,6 +875,8 @@ const App = () => {
     // 监测dataList的变化以获取数据之后更新版面还原信息
     useEffect(() => {
         setDataListLoading(false);
+        console.log("监测到dataListLoading变化")
+        console.log("dddddd", dataList)
         if(currentIndex!=-1 && currentIndex<file.length && dataList[currentIndex].data!==undefined) {
             const image = new Image();
             image.src =file[currentIndex].url;
@@ -1338,9 +1332,7 @@ const App = () => {
                                 <Tooltip title='添加新的文本信息' arrow>
                                     <Button type="secondary"onClick={handleAdd} title='添加新的文本信息' style={{backgroundColor:'white'}}><div style={{fontSize: '25px'}}><IconPlus size='extra large' /></div></Button>
                                 </Tooltip>
-                                {/* <Tooltip title='置信度阈值:0-1之间' arrow  
-                                        onMouseDown={(e) => e.stopPropagation()}
-                                        onTouchStart={(e) => e.stopPropagation()}>
+                                <Tooltip title='置信度阈值:0-1之间' arrow>
                                     <input
                                         id="inputValue"
                                         defaultValue=""
@@ -1358,16 +1350,7 @@ const App = () => {
                                         onChange={saveInputValue}
                                         value={confidenceThres}
                                     />
-                                    
-                                </Tooltip> */}
-                                <div style={{ width: 200, marginRight: 15 }} onMouseDown={(e) => e.stopPropagation()}
-                                        onTouchStart={(e) => e.stopPropagation()}>
-                                        <Slider tipFormatter={v => (`置信度${v}%`)} getAriaValueText={v => (`${v}%`)} onChange={value=>setconfidenceThres(value/100)}/>
-                                </div>
-                                <Tooltip title='置信度阈值:0-1之间' arrow>
-                                <InputNumber onChange={(v) => setconfidenceThres(v/100)} style={{ width: 100 }} value={confidenceThres*100} min={0} max={100} />
                                 </Tooltip>
-                                
                                 <Tooltip title='导出为png/jpg' arrow>
                                     <Button type="secondary" onClick={downloadPDFFile} style={{ marginLeft: '100px', backgroundColor:'white'}}>
                                         <div style={{fontSize: '25px'}}><FileImageOutlined /></div>

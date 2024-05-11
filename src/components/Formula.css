@@ -1,0 +1,10 @@
+.ant-dropdown-menu {
+    column-count: 3;
+    column-gap: 2px;
+}
+.symbol-item {
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
