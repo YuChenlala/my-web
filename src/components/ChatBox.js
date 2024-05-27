@@ -51,7 +51,7 @@ function ChatBox({ messages, setMessages,data }) {
     };
     try {
         // ∑¢ÀÕ“Ï≤Ω???«Û
-        const response = await fetch('https://fad3-222-212-86-164.ngrok-free.app', {
+        const response = await fetch('https://5231-222-212-86-164.ngrok-free.app', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

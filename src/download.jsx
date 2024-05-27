@@ -20,7 +20,7 @@ import {
     IconArticle
 } from '@douyinfe/semi-icons';
 import { FloatButton } from 'antd';
-import Draggable from 'react-draggable'; // reactæ‹–æ‹½åŠŸèƒ½
+import Draggable from 'react-draggable'; // reactÍÏ×§¹¦ÄÜ
 import DraggableDivider from  './components/DraggableDivider'
 import { SideSheet, Upload, Spin,Card ,Slider,InputNumber } from '@douyinfe/semi-ui';
 import { IconPlus ,IconEdit,IconFontColor,IconMark} from '@douyinfe/semi-icons';
@@ -49,42 +49,42 @@ import { TeX } from 'react-latex-next';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const App = () => {
-    const [currentIndex, setCurrentIndex] = useState(-1);  //å½“å‰è¯†åˆ«çš„å›¾ç‰‡ç¼–å·
-    const [rectangleList, setRectangleList] = useState([]) //çŸ©å½¢ä¿¡æ¯
-    const [isUpload,setIsUpload] = useState(false);  //ä¸Šä¼ ä¸­åˆ¤æ–­
-    const [file, setFile] = useState([]);  // å›¾ç‰‡åˆ—è¡¨
-    const [dataList, setDataList] = useState([])    //è®°å½•æ‰€æœ‰è¯†åˆ«æ•°æ®
-    const [ocrData, setOcrData] = useState(null);   //ç›®å‰ç‰ˆæœ¬è¿˜åŸçš„æ–‡æœ¬æ•°æ®
-    const [confidenceThres, setconfidenceThres] = useState(1) //ç½®ä¿¡åº¦é˜ˆå€¼
-    const [showImageAnnotator, setShowImageAnnotator] = useState(false); //å›¾ç‰‡æ ‡æ³¨ç•Œé¢
+    const [currentIndex, setCurrentIndex] = useState(-1);  //µ±Ç°Ê¶±ğµÄÍ¼Æ¬±à??
+    const [rectangleList, setRectangleList] = useState([]) //¾ØĞÎĞÅÏ¢
+    const [isUpload,setIsUpload] = useState(false);  //ÉÏ´«??ÅĞ¶Ï
+    const [file, setFile] = useState([]);  // Í¼Æ¬ÁĞ±í
+    const [dataList, setDataList] = useState([])    //¼ÇÂ¼ËùÓĞÊ¶??Êı¾İ
+    const [ocrData, setOcrData] = useState(null);   //??Ç°°æ??»¹Ô­µÄÎÄ??Êı¾İ
+    const [confidenceThres, setconfidenceThres] = useState(1) //??ĞÅ¶ÈãĞ??
+    const [showImageAnnotator, setShowImageAnnotator] = useState(false); //Í¼Æ¬±ê×¢½çÃæ
 
 
-    // è®¾ç½®ä¸‹æ ç‚¹å‡»çš„å›¾ç‰‡ä¸‹æ ‡
+    // ÉèÖÃÏÂÀ¸µã»÷µÄÍ¼Æ¬ÏÂ??
     const [selectIndex, setSelectIndex] = useState(-1);
-    // ç”¨äºå¤„ç†dataListæ”¹å˜æ— æ³•åŠæ—¶è¢«æ£€æµ‹çš„é—®é¢˜
+    // ÓÃÓÚ´¦ÀídataList¸Ä±äÎŞ·¨¼°Ê±??¼ì²âµÄ????
     const [dataListLoading, setDataListLoading] = useState(false);
-    const [imageNum, setImageNum] = useState(0);  //ç›®å‰æ­£åœ¨è¯†åˆ«çš„å›¾ç‰‡æ•°ç›®
-    const [currentOcr, setCurrentOcr] = useState(false); // æ˜¯å¦æ˜¾ç¤ºè¯†åˆ«ä¸­
+    const [imageNum, setImageNum] = useState(0);  //??Ç°???ÔÚÊ¶±ğµÄÍ¼Æ¬Êı??
+    const [currentOcr, setCurrentOcr] = useState(false); // ??·ñÏÔÊ¾Ê¶????
     const [picRatio,setPicRatio] = useState(null);
-
-    //å¤„ç†æ·»åŠ æŒ‰é’®ç‚¹å‡»äº‹ä»¶-----æ’é™¤å¤„ç†æœªæœ‰è¯†åˆ«æ•°æ®
+    const url = "http://127.0.0.1:5000";
+    //´¦ÀíÌí¼Ó°´Å¥µã»÷ÊÂ¼ş-----ÅÅ³ı´¦Àí??ÓĞÊ¶??Êı¾İ
     const handleAdd = () => {
         if(!currentOcr) {
             if(file!=null) {
                 setShowImageAnnotator(true);
             } else {
-                console.log("æ­¤æ—¶æœªä¸Šä¼ å›¾ç‰‡ï¼")
+                console.log("´ËÊ±??ÉÏ´«Í¼Æ¬??")
             }
         }
         
     }
-    //å¤„ç†æ·»åŠ æ ‡æ³¨å›è°ƒå‡½æ•°
+    //´¦ÀíÌí¼Ó±ê×¢»Øµ÷º¯Êı
     const handleImageAnnotatorClose = (annotatedData) => {
-        console.log("æ·»åŠ å›è°ƒ");
+        console.log("Ìí¼Ó»Øµ÷");
         console.log(annotatedData);
         if (annotatedData.text!=[] && annotatedData.rectangles!=[]) {
-        //æ·»åŠ å…·ä½“å¤„ç†æ ‡æ³¨æ•°æ®æ“ä½œ
-        //å°†æ–°å¢çš„çŸ©å½¢åæ ‡å’Œæ–‡æœ¬æ•°æ®åŠ å…¥
+        //Ìí¼Ó¾ßÌå´¦Àí±ê×¢Êı¾İ²Ù×÷
+        //½«ĞÂÔöµÄ¾ØĞÎ×ø±êºÍÎÄ??Êı¾İ¼ÓÈë
             const score = 1;
             const position = annotatedData.rectangles;
             const text = annotatedData.text;
@@ -94,25 +94,25 @@ const App = () => {
             ocrData.push(dataObj);
             htmlFlash(ocrData)
         }
-        //å…³é—­ç•Œé¢
+        //¹Ø±Õ½çÃæ
         setShowImageAnnotator(false);
     }
 
 
-    //----------------å‚¨å­˜ç½®ä¿¡åº¦é˜ˆå€¼å‡½æ•°-------------------
+    //----------------´¢´æ??ĞÅ¶ÈãĞÖµº¯??-------------------
     const saveInputValue = () => {
         let inputValue = document.getElementById("inputValue").value;
         setconfidenceThres(inputValue);
-        console.log("æ˜¾ç¤ºè®¾ç½®çš„é˜ˆå€¼ï¼š", inputValue);
+        console.log("ÏÔÊ¾ÉèÖÃµÄãĞÖµ£º", inputValue);
     }
    
-    //æ–‡æœ¬æ ‡è®°æ–¹å¼æŒ‰é”®å‚æ•°
+    //ÎÄ±¾±ê???·½Ê½°´??²ÎÊı
     const [model1,setModel1]= useState(false)
     const [model2,setModel2]= useState(false)
-    // é«˜äº®æ ‡è®°
+    // ¸ßÁÁ±ê???
     const [highlightIndex,setHighlightIndex] = useState(-1)
 
-    // é«˜äº®æ¨¡å¼---æ’é™¤å¤„ç†æœªæœ‰è¯†åˆ«æ•°æ®
+    // ¸ßÁÁÄ£Ê½---ÅÅ³ı´¦Àí??ÓĞÊ¶??Êı¾İ
     const resetMode1=() => {
         if(!currentOcr) {
             let t = !model1;
@@ -129,14 +129,14 @@ const App = () => {
         }
     };
 
-    // å›¾åƒæ˜¾ç¤ºç”»å¸ƒ
+    // Í¼ÏñÏÔÊ¾»­²¼
     const canvasRef = useRef(null);
 
-    //é«˜äº®ç‚¹å‡»äº‹ä»¶
+    //¸ßÁÁµã»÷ÊÂ¼ş
     const highLight = (event) => {
         if(dataList[currentIndex].data!=undefined) {
             let rect = canvasRef.current.getBoundingClientRect();
-            // è·å–é¼ æ ‡ç‚¹å‡»çš„ä½ç½®ä¿¡æ¯
+            // »ñÈ¡Êó±êµã»÷µÄÎ»??ĞÅÏ¢
             let x0 = event.clientX - rect.left;
             let y0 = event.clientY - rect.top;
             const rectangle = rectangleList.find(item => (
@@ -150,20 +150,20 @@ const App = () => {
                 const newCtx = newCanvas.getContext('2d');
                 newCanvas.width = rectangleList[index].width;
                 newCanvas.height =rectangleList[index].height;
-                // å°†çŸ©å½¢ä½ç½®çš„åƒç´ æ•°æ®ç»˜åˆ¶
+                // ½«¾Ø??Î»ÖÃµÄÏñËØÊı??»æÖÆ
                 newCtx.putImageData(rectangle.tempPartImage, 0, 0);
                 drawImageAndRectangle(file[currentIndex],dataList[currentIndex].data,model1,model2,index);
-                // è€ƒè™‘ä¿®æ”¹çª—å£çš„æ˜¾ç¤º
+                // ¿¼ÂÇ??¸Ä´°¿ÚµÄÏÔÊ¾
                 if (highlightIndex == index){
-                     // è®¾ç½®é»˜è®¤çš„å…¬å¼æç¤ºä½ç½®
+                     // ÉèÖÃÄ¬???µÄ??Ê½ÌáÊ¾Î»??
                     setFormulaPosition({ x: -40, y: -200 });
-                    // è·å–å¼¹çª—å®¹å™¨å…ƒç´ 
+                    // »ñÈ¡µ¯´°ÈİÆ÷ÔªËØ
                     showDialog(index,function() {
-                        // å»¶è¿Ÿæ‰§è¡Œå›è°ƒå‡½æ•°
+                        // ÑÓ³ÙÖ´???»Øµ÷º¯??
                         setTimeout(function() {
-                            // è·å–å¼¹çª—å®¹å™¨å…ƒç´ 
+                            // »ñÈ¡µ¯´°ÈİÆ÷ÔªËØ
                             const dialogElement = document.getElementById('show-part-picture');
-                            // å°†æ–°çš„Canvaså…ƒç´ æ·»åŠ ä¸ºå¼¹çª—å®¹å™¨å…ƒç´ çš„å­èŠ‚ç‚¹
+                            // ½«ĞÂµÄCanvasÔªËØÌí¼ÓÎªµ¯´°???Æ÷ÔªËØµÄ×Ó½Úµã
                             if (ocrData[index].type == "formula"){
                                 dialogElement.appendChild(newCanvas);
                                 console.log(ocrData[index])
@@ -188,14 +188,14 @@ const App = () => {
             }
             else {
                 htmlFlash(ocrData)
-                setHighlightIndex(-1); //å–æ¶ˆé«˜äº®æ ‡è®°
-                drawImageAndRectangle(file[currentIndex],dataList[currentIndex].data,model1,model2,index); // é‡æ–°è°ƒç”¨ç»˜åˆ¶å‡½æ•°
+                setHighlightIndex(-1); //È¡Ïû¸ßÁÁ±ê???
+                drawImageAndRectangle(file[currentIndex],dataList[currentIndex].data,model1,model2,index); // ÖØĞÂµ÷ÓÃ»æÖÆº¯Êı
             }
         }
         
     }
-    // å¯¹å›¾ç‰‡è¿›è¡Œé«˜äº®ç»˜åˆ¶--çŸ©å½¢æˆ–çŸ©å½¢æ¡†
-    // flag3æ˜¯é«˜äº®æ ‡ï¼Œflag1ã€flag2æ˜¯ä¸åŒçš„é«˜äº®æ¨¡å¼
+    // ¶ÔÍ¼Æ¬½øĞĞ¸ß??»æÖÆ--¾ØĞÎ»ò¾ØĞÎ???
+    // flag3??¸ßÁÁ±ê£¬flag1¡¢flag2??²»Í¬µÄ¸ß??Ä£Ê½
     function drawImageAndRectangle (file,data=undefined,flag1 = 0,flag2 = 0,flag3 = -1){
         // console.log("file:", file)
         const blobUrl = URL.createObjectURL(file.fileInstance);
@@ -205,67 +205,67 @@ const App = () => {
         image.src = blobUrl;
         let rectangles = [];
         image.onload = () => {
-            // è·å–å›¾ç‰‡çš„å®é™…å®½åº¦å’Œé«˜åº¦
+            // »ñÈ¡Í¼Æ¬µÄÊµ¼Ê???¶ÈºÍ¸ß??
             const imageWidth = image.width;
             const imageHeight = image.height;
-            // è®¡ç®—ç¼©æ”¾æ¯”ä¾‹ï¼Œä»¥ç¡®ä¿å›¾ç‰‡æŒ‰ç…§å›ºå®šæ¯”ä¾‹è¿›è¡Œæ˜¾ç¤º
-            // è¿™é‡Œåˆå§‹ä»¥å®¹å™¨çš„å®½å’Œé«˜æ¥è®¾ç½®
-            // è¿™é‡Œæ˜¯å›ºå®šäº†æœ€å¤§å®½é«˜ä¸º1000ã€600çš„ï¼ŒåæœŸå¯æ”¹
+            // ¼ÆËãËõ·Å±ÈÀı£¬ÒÔ??±£Í¼Æ¬°´ÕÕ¹Ì¶¨±ÈÀı½øĞĞÏÔ??
+            // ÕâÀï³õ???ÒÔÈİÆ÷µÄ???ºÍ¸ßÀ´ÉèÖÃ
+            // ÕâÀï??¹Ì¶¨ÁË×î´ó???¸ß??1000??600µÄ£¬ºóÆÚ????
             const ratio = imageHeight/imageWidth;
             const displayWidth = imageRef.current.clientWidth;
             const displayHeight = ratio*imageRef.current.clientWidth;
         
-             // ä¿®æ”¹å›¾ç‰‡å¯¹è±¡çš„å®½åº¦å’Œé«˜åº¦å±æ€§
+             // ??¸ÄÍ¼Æ¬???ÏóµÄ???¶ÈºÍ¸ß¶ÈÊô??
             image.width = displayWidth;
             image.height = displayHeight;
         
-            // è®¾ç½® canvas çš„å®½åº¦å’Œé«˜åº¦ä¸å›¾ç‰‡çš„æ˜¾ç¤ºå®½åº¦å’Œé«˜åº¦ä¸€è‡´
+            // ÉèÖÃ canvas µÄ???¶ÈºÍ¸ß¶ÈÓëÍ¼Æ¬µÄÏÔÊ¾???¶ÈºÍ¸ß¶ÈÒ»??
             canvas.width = displayWidth;
             canvas.height = displayHeight;
-            // ç»˜åˆ¶å›¾ç‰‡åˆ° canvas
+            // »æÖÆÍ¼Æ¬?? canvas
             ctx.drawImage(image, 0, 0, displayWidth, displayHeight);
-            // æ²¡æœ‰æ•°æ®çš„æ—¶å€™ç»˜åˆ¶å›¾ç‰‡
+            // Ã»ÓĞÊı¾İµÄÊ±ºò»æÖÆÍ¼??
             if(data!==undefined) {
-                //æå–åæ ‡å’Œç²¾ç¡®åº¦æ¸²æŸ“
+                //ÌáÈ¡×ø±êºÍ¾«??¶ÈäÖ??
                  let rectangles = [];
                  console.log(data)
                  data.map((item, index) => {
                      const { position, score,text, type, } = item;
                      const coordinateList = position;
-                     //å·¦ä¸Šx
+                     //×óÉÏx
                      const x1 = coordinateList[0][0];
-                     //å·¦ä¸Šy
+                     //×óÉÏy
                      const y1 = coordinateList[0][1];
-                     //å³ä¸Šx
+                     //ÓÒÉÏx
                      const x2 = coordinateList[1][0];
-                     //å·¦ä¸‹y
+                     //×óÏÂy
                      const y4 = coordinateList[3][1];
-                     //é•¿ = å³ä¸Šx - å·¦ä¸Šx
+                     //?? = ÓÒÉÏx - ×óÉÏx
                      const width = (x2 - x1) * image.width
-                     //é«˜ = å·¦ä¸‹y - å·¦ä¸Šx
+                     //?? = ×óÏÂy - ×óÉÏx
                      const height = (y4 - y1) * image.height
                      //x
                      const x = x1 * image.width
                      //y
                      const y = y1 * image.height  
-                     // æ¯ä¸ªçŸ©å½¢æ•°æ®éƒ½å­˜å‚¨å…¶å¯¹åº”æˆªå›¾
+                     // Ã¿¸ö¾ØĞÎÊı¾İ¶¼´æ´¢Æä¶ÔÓ¦????
                      const tempPartImage = ctx.getImageData(x, y, width, height)
                      const rItem = { x, y, width, height, index, tempPartImage}
                      rectangles.push(rItem)
-                     // ç”»çŸ©å½¢
+                     // »­¾Ø??
                      if(flag2){
                          ctx.fillStyle ='rgb(110, 175, 230, 0.4)';
                          ctx.fillRect(x, y, width, height);
-                         ctx.font = '14px Arial';  // è®¾ç½®å­—ä½“å¤§å°å’Œå­—ä½“æ ·å¼
+                         ctx.font = '14px Arial';  // ÉèÖÃ×ÖÌå´óĞ¡ºÍ×ÖÌåÑù??
                          ctx.fillStyle = 'rgb(35, 105, 240)';
-                         ctx.fillText(`${index}`, x, y);  // åœ¨ä½ç½®(x,y)ç»˜åˆ¶æ–‡æœ¬æ•°å­—1
+                         ctx.fillText(`${index}`, x, y);  // ÔÚÎ»??(x,y)»æÖÆÎÄ±¾Êı×Ö1
                      }
                      if(index == flag3){
                          ctx.fillStyle ='rgb(250, 60, 32, 0.4)';
                          ctx.fillRect(x, y, width, height);
-                         ctx.font = '14px Arial';  // è®¾ç½®å­—ä½“å¤§å°å’Œå­—ä½“æ ·å¼
+                         ctx.font = '14px Arial';  // ÉèÖÃ×ÖÌå´óĞ¡ºÍ×ÖÌåÑù??
                          ctx.fillStyle = 'rgb(35, 105, 240)';
-                         ctx.fillText(`${index}`, x, y);  // åœ¨ä½ç½®(x,y)ç»˜åˆ¶æ–‡æœ¬æ•°å­—1
+                         ctx.fillText(`${index}`, x, y);  // ÔÚÎ»??(x,y)»æÖÆÎÄ±¾Êı×Ö1
                         //  const html = ocrData.map((item,index) => {
                         //      const { position, text, type } = item;
                         //      const style = type === 'table' ? `  position: absolute; top: ${position[0][1] * picRatio*editableRef.current.clientWidth}px;  left: ${position[0][0] * 100}%;`: `  position: absolute; top: ${position[0][1] * picRatio*editableRef.current.clientWidth}px; left: ${position[0][0] * 100}%; `;
@@ -304,7 +304,7 @@ const App = () => {
                                 style =`  position: absolute; top: ${position[0][1] * picRatio*editableRef.current.clientWidth}px; left: ${position[0][0] * 100}%; width:${width}px;font-size: ${fontSize}px`;
                             }else if(type == 'text'){
                                 var fontSize = (position[0][1]-position[3][1])*picRatio*editableRef.current.clientWidth;
-                                style =`  position: absolute; top: ${position[0][1] * picRatio*editableRef.current.clientWidth}px; left: ${position[0][0] * 100}%;font-size: ${fontSize}px`;
+                                style =`  position: absolute; top: ${position[0][1] * picRatio*editableRef.current.clientWidth}px; left: ${position[0][0] * 100}%;`;
                                 renderedText = text
                                 
                             }else{
@@ -331,9 +331,9 @@ const App = () => {
                          
                          ctx.lineWidth = 0.8;
                          ctx.strokeRect(x, y, width, height);
-                         ctx.font = '14px Arial';  // è®¾ç½®å­—ä½“å¤§å°å’Œå­—ä½“æ ·å¼
+                         ctx.font = '14px Arial';  // ÉèÖÃ×ÖÌå´óĞ¡ºÍ×ÖÌåÑù??
                          ctx.fillStyle = 'rgb(35, 105, 240)';
-                         ctx.fillText(`${index}`, x, y);  // åœ¨ä½ç½®(x,y)ç»˜åˆ¶æ–‡æœ¬æ•°å­—1
+                         ctx.fillText(`${index}`, x, y);  // ÔÚÎ»??(x,y)»æÖÆÎÄ±¾Êı×Ö1
                      }
                  });
                 setRectangleList([...rectangles]);
@@ -345,19 +345,19 @@ const App = () => {
         }
     }
 
-   //---------------ç‰ˆé¢è¿˜åŸ-----------------
+   //---------------°æÃæ»¹Ô­-----------------
     
     const [htmlContent, setHtmlContent] = useState(`
     
     <div style="color: gray; display: flex; justify-content: center; align-items: center; flex-direction: column; margin-top: 200px;">
-        <p style="font-size: 32px;">è¯†åˆ«è¿˜åŸåŒºåŸŸ</p>
-        <p style="font-size: 32px;">é’ˆå¯¹è¯†åˆ«ç»“æœå‡†ç¡®è¿˜åŸ</p>
+        <p style="font-size: 32px;">Ê¶±ğ»¹Ô­ÇøÓò</p>
+        <p style="font-size: 32px;">Õë???Ê¶??½á¹û×¼È·»¹Ô­</p>
     </div>    
     `);
     const [htmlContent_demo, setHtmlContent_demo] = useState(`
     <div style="color: gray; display: flex; justify-content: center; align-items: center; flex-direction: column; margin-top: 200px;">
-        <p style="font-size: 32px;">å›¾ç‰‡æ˜¾ç¤ºåŒºåŸŸ</p>
-        <p style="font-size: 32px;">ç‚¹å‡»ä¸‹æ–¹æ·»åŠ æŒ‰é”®æ·»åŠ å›¾ç‰‡</p>
+        <p style="font-size: 32px;">Í¼Æ¬ÏÔÊ¾ÇøÓò</p>
+        <p style="font-size: 32px;">µã»÷ÏÂ·½Ìí¼Ó°´¼üÌí¼ÓÍ¼Æ¬</p>
     </div>    
     `);
     const [htmlContent_table, setHtmlContent_table] = useState(``);
@@ -365,7 +365,7 @@ const App = () => {
     const editableRef = useRef(null);
     const tableEditableRef = useRef(null);
     const imageRef = useRef(null);
-    //latexè½¬å…¬å¼
+    //latex??????
     const renderLaTeX = (latex) => {
             return ReactDOMServer.renderToString(<InlineMath >{latex}</InlineMath>);
     };
@@ -403,7 +403,7 @@ const App = () => {
                     style =`  position: absolute; top: ${position[0][1] * picRatio*editableRef.current.clientWidth}px; left: ${position[0][0] * 100}%; width:${width}px;font-size: ${fontSize}px`;
                 }else if(type == 'text'){
                     var fontSize = (position[0][1]-position[3][1])*picRatio*editableRef.current.clientWidth;
-                    style =`  position: absolute; top: ${position[0][1] * picRatio*editableRef.current.clientWidth}px; left: ${position[0][0] * 100}%;font-size: ${fontSize}px`;
+                    style =`  position: absolute; top: ${position[0][1] * picRatio*editableRef.current.clientWidth}px; left: ${position[0][0] * 100}%;`;
                     renderedText = text
                     
                 }else{
@@ -452,7 +452,7 @@ const App = () => {
                 style =`  position: absolute; top: ${position[0][1] * picRatio*editableRef.current.clientWidth}px; left: ${position[0][0] * 100}%; width:${width}px;font-size: ${fontSize}px`;
             }else if(type == 'text'){
                 var fontSize = (position[0][1]-position[3][1])*picRatio*editableRef.current.clientWidth;
-                style =`  position: absolute; top: ${position[0][1] * picRatio*editableRef.current.clientWidth}px; left: ${position[0][0] * 100}%;font-size: ${fontSize}px`;
+                style =`  position: absolute; top: ${position[0][1] * picRatio*editableRef.current.clientWidth}px; left: ${position[0][0] * 100}%;`;
                 renderedText = text
                 
             }else{
@@ -465,9 +465,9 @@ const App = () => {
         }).join('');
         setHtmlContent(html);
     }
-    // ç›‘å¬htmlContentçš„å˜åŒ–ï¼Œæ¯å½“htmlContentæ›´æ–°æ—¶ï¼Œé‡æ–°æ¸²æŸ“ç»„ä»¶
+    // ¼àÌıhtmlContentµÄ±ä»¯£¬Ã¿µ±htmlContent¸üĞÂÊ±£¬ÖØĞÂäÖÈ¾×é¼ş
     useEffect(() => {
-        // åœ¨è¿™é‡Œå¯ä»¥æ‰§è¡Œä¸htmlContentæœ‰å…³çš„å…¶ä»–é€»è¾‘
+        // ÔÚÕâÀï¿ÉÒÔÖ´ĞĞÓëhtmlContentÓĞ¹ØµÄÆäËûÂß¼­
     }, [htmlContent]);
     
     useEffect(() => {
@@ -478,32 +478,32 @@ const App = () => {
     }, [confidenceThres]);
 
 
-    // å¤„ç†å†…å®¹ç¼–è¾‘å®Œæˆåçš„äº‹ä»¶
+    // ´¦ÀíÄÚ???±à¼­Íê³ÉºóµÄÊÂ??
     const handleBlur = () => {
-        // è·å–å¯ç¼–è¾‘å…ƒç´ çš„å½“å‰å†…å®¹
+        // »ñÈ¡??±à¼­ÔªËØµÄµ±Ç°ÄÚ??
         const editedHtml = editableRef.current.innerHTML;
         setHtmlContent(editedHtml);
 
-        // æ›´æ–° OCR æ•°æ®
+        // ¸üĞÂ OCR Êı¾İ
         let updatedOcrData = { ...ocrData };
         updatedOcrData= Array.from(editableRef.current.children).map((element,index)=> {
             const type = element.getAttribute('data-type');
             const position =ocrData[index].position;
             // const length = ocrData[index].text.length; 
-            // console.log("é•¿åº¦å¯¹æ¯”:",length,"æ–‡æœ¬",element.innerText.length)
+            // console.log("³¤¶È¶Ô±È:",length,"ÎÄ±¾",element.innerText.length)
             const elementText = element.innerText;
             let newlineIndex = -1;
             for (let i = elementText.length - 1; i >= 0; i--) {
                 if (elementText[i] === '\n') {
                     newlineIndex = i;
-                    break; // æ‰¾åˆ°ç¬¬ä¸€ä¸ªæ¢è¡Œç¬¦ååœæ­¢å¾ªç¯
+                    break; // ÕÒµ½??Ò»??»»??????ºóÍ£???Ñ­??
                 }
             }
             let Text = null
             if (newlineIndex !== -1) {
-                Text = elementText.substring(newlineIndex + 1); // æˆªå–æ¢è¡Œç¬¦åé¢çš„éƒ¨åˆ†
+                Text = elementText.substring(newlineIndex + 1); // ??È¡»»ĞĞ???ºóÃæµÄ²¿·Ö
             } else {
-                console.log("æœªæ‰¾åˆ°æ¢è¡Œç¬¦");
+                console.log("??ÕÒµ½»»??????");
             }
             let text;
             if (type === "table") {
@@ -512,14 +512,14 @@ const App = () => {
                 console.log("formula:",element.innerText);
                 text = ocrData[index].text;
             } else {
-                text = element.innerText; // è¿™é‡Œçš„ Text æ˜¯ä½ åŸæ¥ä»£ç ä¸­çš„å˜é‡ï¼Œä¿ç•™äº†åŸé€»è¾‘
+                text = element.innerText; // ÕâÀï?? Text ??ÄãÔ­À´´úÂëÖĞµÄ±äÁ¿£¬±£ÁôÁËÔ­Âß¼­
             }
             const score = ocrData[index].score;
             return { position, text, type,score };
         });
         const currentDataList = [...dataList]; 
 
-        // ä¿®æ”¹ç´¢å¼•ä¸º 0 çš„å…ƒç´ 
+        // ??¸ÄË÷ÒıÎª 0 µÄÔª??
         if (currentDataList.length > 0) {
             const updatedElement = { ...currentDataList[currentIndex] }; 
             updatedElement.data =updatedOcrData;
@@ -533,26 +533,26 @@ const App = () => {
     const handleBlur_table = ()=>{
         
     }
-    //-------------å›¾ç‰‡é€‰æ‹©å’Œå‰åç«¯äº¤äº’---------------
-    // å°†å›¾ç‰‡çš„ URL è½¬æ¢æˆæ–‡ä»¶
+    //-------------Í¼Æ¬Ñ¡ÔñºÍÇ°ºó???½»»¥---------------
+    // ½«Í¼Æ¬µÄ URL ??»»³ÉÎÄ¼ş
     async function urlToBlob(url) {
       const response = await fetch(url);
       const blob = await response.blob();
       return blob;
     }
     
-    //ä¸‹æ å›¾ç‰‡ç‚¹å‡»äº‹ä»¶
+    //ÏÂÀ¸Í¼Æ¬µã»÷ÊÂ¼ş
     function imageSelect(File){
         setModel1(false);
         setModel2(false);
-        console.log("å½“å‰ç‚¹å‡»", File);
+        console.log("µ±Ç°µã»÷", File);
         file.forEach((item, index)=>{
             if(item.url == File.url){
-                // console.log("ä¿å­˜ç‚¹å‡»ä¸‹æ ‡", index);
+                // console.log("±£´æµã»÷ÏÂ±ê", index);
                 // setSelectIndex(index);
                 setCurrentIndex(index);
-                console.log("ä¸‹æ ‡ï¼š", index);
-                console.log("æ•°æ®", dataList[index].data);
+                console.log("ÏÂ±ê??", index);
+                console.log("Êı¾İ", dataList[index].data);
                 if(dataList[index].data !== undefined) {
                     const image = new Image();
                     image.src = item.url;
@@ -569,7 +569,7 @@ const App = () => {
                 }
                 else {
                     drawImageAndRectangle(File);
-                    setCurrentOcr(true); // è®¾ç½®ä¸ºè¯†åˆ«ä¸­
+                    setCurrentOcr(true); // ÉèÖÃÎªÊ¶????
                 }
             }
         })
@@ -586,19 +586,19 @@ const App = () => {
         }
         return new Blob([u8arr], { type: mime });
     }
-    // è¾…åŠ©å‡½æ•°ï¼Œè®¡ç®—æ–‡ä»¶å¤§å°
+    // ¸¨Öúº¯Êı£¬???ËãÎÄ¼ş´óĞ¡
     function calculateFileSize(size) {
-        const KB = size / 1024; // å°†å­—èŠ‚è½¬æ¢ä¸ºKB
-        return KB.toFixed(2); // ä¿ç•™ä¸¤ä½å°æ•°
+        const KB = size / 1024; // ½«×Ö½Ú×ª??ÎªKB
+        return KB.toFixed(2); // ±£ÁôÁ½Î»Ğ¡Êı
     }
 
     async function createFileInstanceFromUrl(url) {
         try {
-           // ä½¿ç”¨ fetch è·å– URL æŒ‡å‘çš„èµ„æº
+           // Ê¹ÓÃ fetch »ñÈ¡ URL Ö¸ÏòµÄ×Ê??
           const response = await fetch(url);
-          const blob = await response.blob(); //å°†å“åº”æ•°æ®è½¬æ¢ä¸º Blob å¯¹è±¡
+          const blob = await response.blob(); //½«ÏìÓ¦Êı???????? Blob ¶ÔÏó
       
-          // åˆ›å»ºä¸€ä¸ªæ–°çš„ File å¯¹è±¡ï¼Œå°† Blob å¯¹è±¡ä½œä¸ºå‚æ•°ä¼ é€’ç»™æ„é€ å‡½æ•°
+          // ´´½¨Ò»??ĞÂµÄ File ¶ÔÏó£¬½« Blob ¶ÔÏó×÷Îª²ÎÊı´«µİ¸ø¹¹Ôìº¯??
           const fileInstance = new File([blob], 'filename.pdf', { type: 'application/pdf' });
       
           return fileInstance;
@@ -617,11 +617,11 @@ const App = () => {
       
           for (let i = imageNum; i < file.length; i++) {
             const currentFile = file[i];
-            // console.log("ç›®å‰æ­£åœ¨è¯†åˆ«çš„æ–‡ä»¶ï¼š", currentFile);
+            // console.log("??Ç°???ÔÚÊ¶±ğµÄÎÄ¼ş£º", currentFile);
             imageOCR(currentFile);
             setImageNum(imageNum+1);
           }
-           // æ›´æ–° imageNum çš„å€¼ï¼Œä»¥ä¾¿ä¸‹æ¬¡è§¦å‘æ—¶ä»æ­£ç¡®çš„ä½ç½®å¼€å§‹å¤„ç†
+           // ¸üĞÂ imageNum µÄÖµ£¬ÒÔ±ãÏÂ???´¥·¢Ê±´Ó???È·µÄÎ»??¿ªÊ¼???Àí
           setImageNum(file.length);
         }
       }, [file, imageNum]);
@@ -634,11 +634,11 @@ const App = () => {
         }
     }, [dataList, currentIndex]);
     
-    // ä¸Šä¼ äº‹ä»¶
+    // ÉÏ´«ÊÂ¼ş
     const  imageUpload = async ({ fileList, currentFile, event }) => {
         setIsUpload(true);
-        console.log("ä¸Šä¼ ç»„ä»¶è°ƒç”¨ï¼š", fileList);
-        // å…ˆåˆ›å»ºä¸€ä¸ªå’ŒfileListç›¸åŒé•¿åº¦çš„dataList
+        console.log("ÉÏ´«×é¼şµ÷ÓÃ??", fileList);
+        // ÏÈ´´½¨Ò»??ºÍfileListÏàÍ¬³¤¶ÈµÄdataList
         const tempDataList = fileList.map(file => {
             const dataObj = dataList.find(data => data.url === file.url);
             return {
@@ -648,54 +648,54 @@ const App = () => {
           });
 
         const fileExtension = fileList[fileList.length-1].name.split('.').pop();
-        // pdfæ–‡ä»¶ä¸Šä¼ å¤„ç†
+        // pdfÎÄ¼şÉÏ´«´¦Àí
         if (fileExtension.toLowerCase() == "pdf") {
-            // pdfæ‹†æˆå›¾ç‰‡åŠ å…¥fileä¸­
+            // pdf²ğ³ÉÍ¼Æ¬¼ÓÈëfile??
             try {
                     //const imageUrls = await Pdf2Images(fileList[fileList.length-1].url);
                     const response = await axios.get(fileList[fileList.length-1].url, {
-                        responseType: 'blob', // è®¾ç½®å“åº”ç±»å‹ä¸ºBlob
+                        responseType: 'blob', // ÉèÖÃÏìÓ¦ÀàĞÍÎªBlob
                     });
-                    const blob = response.data; // è·å–PDFæ–‡ä»¶çš„Blobå¯¹è±¡
-                    // å¼‚æ­¥å¤„ç†
+                    const blob = response.data; // »ñÈ¡PDFÎÄ¼şµÄBlob¶ÔÏó
+                    // Òì??????Àí
                     const arrayBuffer = await blob.arrayBuffer(); 
                     const pdf = await pdfjs.getDocument({
-                        data: arrayBuffer,}).promise; // è·å–PDFæ–‡æ¡£å¯¹è±¡
+                        data: arrayBuffer,}).promise; // »ñÈ¡PDFÎÄµµ¶ÔÏó
 
-                    const numPages = pdf.numPages; // è·å–PDFæ–‡æ¡£çš„æ€»é¡µæ•°
+                    const numPages = pdf.numPages; // »ñÈ¡PDFÎÄµµµÄ×ÜÒ³??
                     // const imageUrls = [];
                     const name = `${fileList[fileList.length-1].name}`
                     console.log(numPages);
-                    // ç§»é™¤pdfå¯¹è±¡ï¼Œåç»­æ›¿æ¢æˆæ¯å¼ å›¾ç‰‡
+                    // ÒÆ³ıpdf¶ÔÏó£¬ºó??Ìæ»»³ÉÃ¿ÕÅÍ¼??
                     fileList.pop();
                     tempDataList.pop();
                     for (let pageNumber = 1; pageNumber <= numPages; pageNumber++) {
-                        const page = await pdf.getPage(pageNumber); // è·å–PDFçš„æ¯ä¸€é¡µ
+                        const page = await pdf.getPage(pageNumber); // »ñÈ¡PDFµÄÃ¿Ò»??
                     
-                        const viewport = page.getViewport({ scale: 1.5 }); // è·å–é¡µé¢çš„è§†å£
+                        const viewport = page.getViewport({ scale: 1.5 }); // »ñÈ¡Ò³ÃæµÄ???¿Ú
                     
-                        const canvas = document.createElement('canvas'); // åˆ›å»ºcanvaså…ƒç´ 
-                        const context = canvas.getContext('2d'); // è·å–2dç»˜å›¾ä¸Šä¸‹æ–‡
+                        const canvas = document.createElement('canvas'); // ´´½¨canvasÔªËØ
+                        const context = canvas.getContext('2d'); // »ñÈ¡2d»æÍ¼ÉÏÏÂ??
                     
-                        canvas.width = viewport.width; // è®¾ç½®canvasçš„å®½åº¦
-                        canvas.height = viewport.height; // è®¾ç½®canvasçš„é«˜åº¦
+                        canvas.width = viewport.width; // ÉèÖÃcanvasµÄ???¶È
+                        canvas.height = viewport.height; // ÉèÖÃcanvasµÄ¸ß??
                     
                         const renderContext = {
                           canvasContext: context,
                           viewport: viewport
                         };
                     
-                        await page.render(renderContext).promise; // å°†é¡µé¢æ¸²æŸ“åˆ°canvasä¸Š
+                        await page.render(renderContext).promise; // ½«Ò³ÃæäÖÈ¾µ½canvas??
                     
-                        const dataUrl = canvas.toDataURL('image/png'); // å°†canvasè½¬æ¢ä¸ºdata URL
+                        const dataUrl = canvas.toDataURL('image/png'); // ½«canvas????Îªdata URL
                         const b = dataURLtoBlob(dataUrl);
                         const imageUrl = URL.createObjectURL(b);
-                        const fileName = `${name}_${pageNumber}.png`; // è®¾ç½®æ–‡ä»¶å
-                        const fileSize = calculateFileSize(b.size); // è®¡ç®—æ–‡ä»¶å¤§å°
-                        const path = imageUrl; // è®¾ç½®å›¾ç‰‡URL
+                        const fileName = `${name}_${pageNumber}.png`; // ÉèÖÃÎÄ¼ş??
+                        const fileSize = calculateFileSize(b.size); // ¼ÆËãÎÄ¼ş´óĞ¡
+                        const path = imageUrl; // ÉèÖÃÍ¼Æ¬URL
                         const fileInstance = await createFileInstanceFromUrl(imageUrl);
 
-                        // å°†å›¾ç‰‡URLæ·»åŠ åˆ°æ•°ç»„ä¸­
+                        // ½«Í¼Æ¬URLÌí¼Óµ½Êı×éÖĞ
                         fileList.push({
                             event: event,
                             fileInstance: fileInstance,
@@ -710,7 +710,7 @@ const App = () => {
                         });
                         const dataObj = { url: path, data: undefined }
                         tempDataList.push(dataObj);
-                        //fileList.push(fileList[fileList.length-1]); // å°†å›¾ç‰‡URLæ·»åŠ åˆ°æ•°ç»„ä¸­
+                        //fileList.push(fileList[fileList.length-1]); // ½«Í¼Æ¬URLÌí¼Óµ½Êı×éÖĞ
                     }
                     setFile(fileList);  
                     setDataList(tempDataList);
@@ -718,31 +718,31 @@ const App = () => {
                 console.error('Error processing PDF:', error);
               }
         } else {
-            // æ–‡ä»¶ç±»å‹ä¸ºå›¾ç‰‡
+            // ÎÄ¼şÀàĞÍÎªÍ¼??
             setFile(fileList);
             setDataList(tempDataList);
         }
         setIsUpload(false);
     };
 
-    // ç§»é™¤çš„å›è°ƒå‡½æ•°---ç›®å‰æ²¡ç”¨
+    // ÒÆ³ıµÄ»Øµ÷º¯??---??Ç°Ã»??
     const imageRemove = async ({fileList}) => {
-        // console.log("ç§»é™¤æ–‡ä»¶çš„å›è°ƒï¼š", imageNum-1);
+        // console.log("ÒÆ³ıÎÄ¼şµÄ»Øµ÷£º", imageNum-1);
         // setImageNum(imageNum-1);
 
     }
 
-    // è¯†åˆ«å‡½æ•°
-    // imageNum---æ§åˆ¶è¯†åˆ«çš„å›¾ç‰‡ä¸‹æ ‡
+    // Ê¶±ğº¯Êı
+    // imageNum---¿ØÖÆÊ¶±ğµÄÍ¼Æ¬ÏÂ??
     async function imageOCR2 (File){
         // setIsUpload(true);
-        console.log("ç›®å‰å›¾ç‰‡åˆ—è¡¨é•¿åº¦ï¼š", File.length)
-        console.log("è°ƒç”¨è¯†åˆ«ä¸€æ¬¡ï¼")
+        console.log("??Ç°Í¼Æ¬ÁĞ±í³¤¶È£º", File.length)
+        console.log("µ÷ÓÃÊ¶±ğÒ»´Î£¡")
         const formData = new FormData();
-        // ä¸€æ¬¡åªè¯†åˆ«ä¸€å¼ 
+        // Ò»´ÎÖ»Ê¶±ğÒ»??
         if(File.length-imageNum > 0) {
             const url = File[imageNum].url;
-            console.log("å¾…è¯†åˆ«å›¾ç‰‡çš„url:", url);
+            console.log("´ıÊ¶??Í¼Æ¬µÄurl:", url);
             setImageNum(imageNum+1);
             const blob = await urlToBlob(url);
             formData.append('image', blob);
@@ -756,46 +756,46 @@ const App = () => {
         //     formData.append('image', blob);
         // }
         try {
-            fetch('http://106.55.146.40:80/ceshi', {
+            fetch('https://8eb3-222-212-86-164.ngrok-free.app/one-image', {
                 method: 'POST',
                 body: formData,
                 mode: 'cors',
             })
-            //è§£æåç«¯è¿”å›æ•°æ®
+            //½âÎöºó???·µ»ØÊı¾İ
             .then(response => response.json())
             .then(Data => {
-                // console.log("è¿”å›æ•°æ®ï¼š",Data['OCR_data']);
+                // console.log("·µ»ØÊı¾İ??",Data['OCR_data']);
                 Data['OCR_data'].forEach(function(item,index) {
-                    // åœ¨æ­¤å¤„å¯¹æ¯ä¸ªé¡¹æ‰§è¡Œæ“ä½œ
-                    // æ’åº
+                    // ÔÚ?????????Ã¿??ÏîÖ´ĞĞ²Ù??
+                    // ÅÅĞò
                     const data = [...Data].sort((a, b) => {
-                        // ç¡®ä¿ a å’Œ b çš„ position å­˜åœ¨
+                        // ???? a ?? b ?? position ´æÔÚ
                         if (a.position && b.position) {
-                        // ç¡®ä¿ position ä¸­çš„ç¬¬ä¸€ä¸ªå…ƒç´ å­˜åœ¨
+                        // ???? position ??µÄ???Ò»??ÔªËØ´æÔÚ
                         if (a.position[0] && b.position[0]) {
-                            // æ¯”è¾ƒçºµåæ ‡
+                            // ±È½Ï×İ×ø??
                             if (a.position[0][1] < b.position[0][1]) {
                             return -1;
                             } else if (a.position[0][1] > b.position[0][1]) {
                             return 1;
                             } else {
-                            // å¦‚æœçºµåæ ‡ç›¸ç­‰ï¼Œåˆ™æ¯”è¾ƒæ¨ªåæ ‡
+                            // Èç¹û×İ×ø±êÏàµÈ£¬Ôò±È½Ïºá×ø±ê
                             if (a.position[0][0] < b.position[0][0]) {
                                 return -1;
                             } else if (a.position[0][0] > b.position[0][0]) {
                                 return 1;
                             } else {
-                                return 0; // å¦‚æœæ¨ªåæ ‡ä¹Ÿç›¸ç­‰ï¼Œè¿”å›0
+                                return 0; // Èç¹û??×ø±êÒ²ÏàµÈ£¬·µ»Ø0
                             }
                             }
                         }
                         }
-                        return 0; // é»˜è®¤è¿”å›0ï¼Œå¯ä»¥æ ¹æ®å…·ä½“æƒ…å†µè°ƒæ•´
+                        return 0; // Ä¬???·µ??0£¬¿ÉÒÔ¸ù??¾ßÌåÇé¿öµ÷Õû
                     });
                     const url = File[imageNum+index].url
                     // console.log(data);
                     const dataObj = { url, data };
-                    // é»˜è®¤æ˜¾ç¤ºç¬¬ä¸€å¼ å›¾ç‰‡å’Œä¿¡æ¯çš„æ“ä½œ
+                    // Ä¬???ÏÔÊ¾???Ò»ÕÅÍ¼Æ¬ºÍĞÅÏ¢µÄ²Ù??
                     if(url==File[0].url){
                         drawImageAndRectangle(File[0], data);
                         setCurrentIndex(0);
@@ -808,7 +808,7 @@ const App = () => {
                 // setIsUpload(false);
             
             } catch (error) {
-                console.error('å‘ç”Ÿé”™è¯¯ï¼š', error);
+                console.error('·¢Éú´í?????', error);
             }
             // setImageNum(File.length);
             // setPdfFlag(0);
@@ -822,38 +822,38 @@ const App = () => {
         try {
             //  http://127.0.0.1:5000/upload
             // https://7916-211-83-127-29.ngrok-free.app/one-image
-            fetch('http://106.55.146.40:80/one-image', {
+            fetch('http://127.0.0.1:10009/one-image', {
                 method: 'POST', 
                 body: formData,
                 mode: 'cors',
             })
-            //è§£æåç«¯è¿”å›æ•°æ®
+            //½âÎöºó???·µ»ØÊı¾İ
             .then(response => response.json())
             .then(Data => {
-                // æ’åº
+                // ÅÅĞò
                 const data = [...Data].sort((a, b) => {
-                    // ç¡®ä¿ a å’Œ b çš„ position å­˜åœ¨
+                    // ???? a ?? b ?? position ´æÔÚ
                     if (a.position && b.position) {
-                        // ç¡®ä¿ position ä¸­çš„ç¬¬ä¸€ä¸ªå…ƒç´ å­˜åœ¨
+                        // ???? position ??µÄ???Ò»??ÔªËØ´æÔÚ
                         if (a.position[0] && b.position[0]) {
-                        // æ¯”è¾ƒçºµåæ ‡
+                        // ±È½Ï×İ×ø??
                         if (a.position[0][1] < b.position[0][1]) {
                             return -1;
                         } else if (a.position[0][1] > b.position[0][1]) {
                             return 1;
                         } else {
-                            // å¦‚æœçºµåæ ‡ç›¸ç­‰ï¼Œåˆ™æ¯”è¾ƒæ¨ªåæ ‡
+                            // Èç¹û×İ×ø±êÏàµÈ£¬Ôò±È½Ïºá×ø±ê
                             if (a.position[0][0] < b.position[0][0]) {
                             return -1;
                             } else if (a.position[0][0] > b.position[0][0]) {
                             return 1;
                             } else {
-                            return 0; // å¦‚æœæ¨ªåæ ‡ä¹Ÿç›¸ç­‰ï¼Œè¿”å›0
+                            return 0; // Èç¹û??×ø±êÒ²ÏàµÈ£¬·µ»Ø0
                             }
                         }
                         }
                     }
-                    return 0; // é»˜è®¤è¿”å›0ï¼Œå¯ä»¥æ ¹æ®å…·ä½“æƒ…å†µè°ƒæ•´
+                    return 0; // Ä¬???·µ??0£¬¿ÉÒÔ¸ù??¾ßÌåÇé¿öµ÷Õû
                 });
 
                 for(let i=0; i<dataList.length; i++) {
@@ -863,9 +863,9 @@ const App = () => {
                     }
                 }
                 setDataList(dataList);
-                console.log("è¯†åˆ«åçš„dataList:", dataList);
+                console.log("Ê¶±ğºóµÄdataList:", dataList);
                 setDataListLoading(true);
-                // // é»˜è®¤æ˜¾ç¤ºç¬¬ä¸€å¼ å›¾ç‰‡å’Œä¿¡æ¯çš„æ“ä½œ
+                // // Ä¬???ÏÔÊ¾???Ò»ÕÅÍ¼Æ¬ºÍĞÅÏ¢µÄ²Ù??
                 // if(url==file[0].url){
                 //     drawImageAndRectangle(file[0], data);
                 //     setCurrentIndex(0);
@@ -875,12 +875,12 @@ const App = () => {
                 // dataList.push(dataObj);
             })
         } catch (error) {
-            console.error('å‘ç”Ÿé”™è¯¯ï¼š', error);
+            console.error('·¢Éú´í?????', error);
         }
     }
 
 
-    // ç›‘æµ‹dataListçš„å˜åŒ–ä»¥è·å–æ•°æ®ä¹‹åæ›´æ–°ç‰ˆé¢è¿˜åŸä¿¡æ¯
+    // ¼à²âdataListµÄ±ä»¯ÒÔ»ñÈ¡Êı¾İÖ®ºó¸üĞÂ°æÃæ»¹Ô­ĞÅÏ¢
     useEffect(() => {
         setDataListLoading(false);
         if(currentIndex!=-1 && currentIndex<file.length && dataList[currentIndex].data!==undefined) {
@@ -898,17 +898,17 @@ const App = () => {
             setOcrData(dataList[currentIndex].data);
         }
         else if(currentIndex!=-1) {
-            // è®¾ç½®å½“å‰å›¾ç‰‡ä¸ºè¯†åˆ«ä¸­
+            // ÉèÖÃµ±Ç°Í¼Æ¬ÎªÊ¶????
             setCurrentOcr(true);
         }
     }, [dataListLoading, currentIndex]);
 
 
-    //åŠŸèƒ½å®ç°â€”â€”â€”â€”å¼¹çª—å®ç°
+    //¹¦ÄÜÊµÏÖ¡ª¡ª¡ª¡ªµ¯´°Êµ??
     const [visible, setVisible] = useState(false);
     const [text, setText] = useState('');
 
-    // ä¿®æ”¹å¼¹çª—çš„å‡ºç°--indexï¼Œå›è°ƒå‡½æ•°
+    // ??¸Äµ¯´°µÄ³öÏÖ--index£¬»Øµ÷º¯??
     function showDialog(index,callback) {
         if(index != -1){
             setVisible(true);
@@ -919,7 +919,7 @@ const App = () => {
         }
     }
     
-    // å†…å®¹ä¿®æ”¹çš„ç¡®å®š
+    // ÄÚ???ĞŞ¸ÄµÄ????
     const handleOk = () => {
         if(ocrData[highlightIndex].type != 'table'){
             setVisible(false);
@@ -935,8 +935,8 @@ const App = () => {
             setHtmlContent_formula(renderLaTeX(""))
         }else{
             const editedHtml = tableEditableRef.current.innerHTML;
-            const newOcrData = [...ocrData]; // åˆ›å»º ocrData çš„å‰¯æœ¬
-            // ä¿®æ”¹å‰¯æœ¬ä¸­ highlightIndex å¤„çš„ text å±æ€§å€¼
+            const newOcrData = [...ocrData]; // ´´½¨ ocrData µÄ¸±??
+            // ??¸Ä¸±???? highlightIndex ´¦µÄ text ÊôĞÔ??
             newOcrData[highlightIndex].text = editedHtml;
             const currentDataList = [...dataList]; 
             if (currentDataList.length > 0) {
@@ -963,62 +963,84 @@ const App = () => {
     const handleSelectionChange = (event) =>{
         setText(event.target.value);
     }
-    // åˆ é™¤æŸä¸ªå†…å®¹
+    // É¾³ıÄ³¸öÄÚ???
     const handleDec = () => {
-        console.log("åˆ é™¤");
-        // è‹¥æ²¡æœ‰é«˜äº®ï¼Œåˆ™indexæ­¤æ—¶ä¸º-1
+        console.log("É¾³ı");
+        // ÈôÃ»ÓĞ¸ß??£¬Ôòindex´ËÊ±??-1
         if (highlightIndex != -1) {
-          //æ›´æ–°currentTextList
+          //¸üĞÂcurrentTextList
             ocrData.splice(highlightIndex, 1);
             htmlFlash(ocrData)
-          //æ›´æ–°dataList
+          //¸üĞÂdataList
           dataList[currentIndex].data.splice(highlightIndex, 1);
         }
-        // å…³é—­å¼¹çª—
+        // ¹Ø±Õµ¯´°
         handleCancel();
     }
-    //é—®ç­”åŠŸèƒ½å®ç°
+    //??´ğ¹¦ÄÜÊµ??
     const [messages, setMessages] = useState([
         {
-          content: 'ä½ å¥½ï¼Œæœ‰ä»€ä¹ˆå¯ä»¥å¸®åŠ©ä½ çš„å—',
+          content: 'ÄãºÃ£¬ÓĞÊ²Ã´¿ÉÒÔ°ïÖúÄãµÄÂğ',
           sender: 'System',
           timestamp: new Date().toLocaleTimeString(),
           avatar: robotAvatar,
         },
       ]);
     const [chatVisible, setChatVisible] = useState(false);
-    // é—®ç­”åŠŸèƒ½çš„ç‚¹å‡»äº‹ä»¶
+    // ??´ğ¹¦ÄÜµÄµã»÷ÊÂ¼ş
     const change = () => {
         setChatVisible(!chatVisible);
     };
 
 
     const downloadPDFFile = async () => {
-        const blob = new Blob([htmlContent], { type: 'text/html' });
-        const file = new File([blob], 'your_file.html', { type: 'text/html' });
-
-        const formData = new FormData();
-        formData.append('file', file);
-        try {
-            fetch('https://ce04-171-94-16-68.ngrok-free.app/convertToPdf', {
-                    method: 'POST',
-                    body: formData
-                })
-                //è§£æåç«¯è¿”å›æ•°æ®
-                .then(response => response.json())
-                
-         
-        } catch (error) {
-            console.error('Error uploading file:', error);
+        const response = await fetch('http://127.0.0.1:5000/convertToPdf', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ html: htmlContent }),
+        });
+        if (response.ok) {
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'document.pdf';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        } else {
+            console.error('Failed to generate PDF');
         }
-    };
+    }
+    const downloadImgFile = async () => {
+        const response = await fetch('http://127.0.0.1:5000/convertToImg', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ html: htmlContent }),
+        });
+        if (response.ok) {
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'document.png';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+          } else {
+            console.error('Failed to generate Image');
+          }
+    }
 
-
-    // ç‚¹å‡»å…¬å¼ç¬¦å·çš„å‡½æ•°
+    // µã»÷??Ê½???ºÅµÄº¯??
     const handleSymbolClick = (symbol) => {
-        // è€ƒè™‘ä¿®æ”¹çª—å£å’Œç‰ˆé¢è¿˜åŸçª—å£ä¸¤ä¸ªéƒ¨åˆ†
+        // ¿¼ÂÇ??¸Ä´°¿ÚºÍ°æÃæ»¹Ô­´°¿ÚÁ½¸ö²¿·Ö
         if (visible==true) {
-            /// æ­¤æ—¶å®šä½åˆ°ä¿®æ”¹çª—å£
+            /// ´ËÊ±¶¨Î»µ½ĞŞ¸Ä´°??
             let textarea = document.getElementById("modified");
             if (textarea.selectionStart !== undefined && textarea.selectionEnd !== undefined && textarea.value !== undefined) {
                 const { selectionStart, selectionEnd, value } = textarea;
@@ -1029,33 +1051,33 @@ const App = () => {
                 textarea.value = newValue;
                 textarea.focus();
                 textarea.setSelectionRange(selectionStart + symbol.length, selectionStart + symbol.length);
-                // å¦‚æœä¸ºä¿®æ”¹çª—å£ï¼Œè°ƒç”¨å‡½æ•°æ›´æ–°
+                // Èç¹ûÎªĞŞ¸Ä´°¿Ú£¬µ÷ÓÃº¯Êı¸üĞÂ
                 setText(newValue);
               } else {
-                // å¤„ç†æ²¡æœ‰å…‰æ ‡æˆ–æ²¡æœ‰æ–‡æœ¬åŒºåŸŸçš„æƒ…å†µ
+                // ´¦ÀíÃ»ÓĞ¹â±ê»òÃ»ÓĞÎÄ??ÇøÓòµÄÇé??
               }
         }else{
-            // ç‰ˆé¢è¿˜åŸåŒºåŸŸï¼
+            // °æÃæ»¹Ô­ÇøÓò??
         }
         
         
       };
 
-    // æ‹–æ‹½æ ‡å¿—
+    // ÍÏ×§±êÖ¾
     const [isQuestionDragging, setIsQuestionDragging] = useState(false);
     const [isFormulaDragging, setIsFormulaDragging] = useState(false);
     const [isButtonDragging, setIsButtonDragging] = useState(false);
     // const [isAnnotatorDragging, setIsAnnotatorDragging] = useState(false);
-    // ä½ç½®
+    // Î»ÖÃ
     const [formulaPosition, setFormulaPosition] = useState({ x: -40, y: -200 });
     const [questionPosition, setQuestionPosition] = useState({ x: -50, y: -20 });
     const [buttonPosition, setButtonPosition] = useState({x: 0, y: 0});
     // const [annotatorPosition, setAnnotatorPosition] = useState({x: 0, y: 0});
 
-    // é—®ç­”æœåŠ¡çš„æ‹–æ‹½å‡½æ•°
+    // ??´ğ·şÎñµÄÍÏ×§º¯Êı
     const handleDrag2 = (e, ui) => {
         setIsQuestionDragging(true);
-        // è·å–æ‹–åŠ¨åç§»é‡
+        // »ñÈ¡ÍÏ¶¯Æ«ÒÆ??
         const { x, y } = ui;
         setQuestionPosition(prevPosition => ({
           x: prevPosition.x + x,
@@ -1063,30 +1085,30 @@ const App = () => {
         }));
     };
     
-    //å…¬å¼æç¤ºçš„æ‹–æ‹½å‡½æ•°
+    //??Ê½ÌáÊ¾µÄÍÏ×§º¯Êı
     const handleDrag1 = (e, ui) => {
         setIsFormulaDragging(true);
-        // è·å–æ‹–åŠ¨åç§»é‡
+        // »ñÈ¡ÍÏ¶¯Æ«ÒÆ??
         const { x, y } = ui;
         setFormulaPosition(prevPosition => ({
           x: prevPosition.x + x,
           y: prevPosition.y + y
         }));
     };
-    // æŒ‰é”®åŒºçš„æ‹–æ‹½å‡½æ•°
+    // °´¼üÇøµÄÍÏ×§º¯Êı
     const handleDrag3 = (e, ui) => {
         setIsButtonDragging(true);
-        // è·å–æ‹–åŠ¨åç§»é‡
+        // »ñÈ¡ÍÏ¶¯Æ«ÒÆ??
         const {x, y} = ui;
         setButtonPosition(prevPosition => ({
             x: prevPosition.x + x,
             y: prevPosition.y + y
         }));
     };
-    // // æ·»åŠ çª—å£çš„æ‹–æ‹½å‡½æ•°
+    // // Ìí¼Ó´°¿ÚµÄÍÏ×§º¯??
     // const handleDrag4 = (e, ui) => {
     //     setIsAnnotatorDragging(true);
-    //     // è·å–æ‹–åŠ¨åç§»é‡
+    //     // »ñÈ¡ÍÏ¶¯Æ«ÒÆ??
     //     const {x, y} = ui;
     //     setAnnotatorPosition(prevPosition => ({
     //         x: prevPosition.x + x,
@@ -1106,15 +1128,15 @@ const App = () => {
             backgroundColor: '#f0f0f0'
             }}>
 
-            {/* å¤´éƒ¨å¸ƒå±€ */}
+            {/* Í·²¿²¼¾Ö */}
             <Header>
                 <div>
                     <Nav mode="horizontal" defaultSelectedKeys={['Home']} style={{ backgroundColor: 'rgb(32,161,255)', height: '60px', boxShadow:'2px, 2px, 2px, rgba(194, 210, 255, .35)' }}>
-                        {/* å›¾æ ‡ */}
+                        {/* Í¼±ê */}
                         <Nav.Header>
                             <IconFeishuLogo style={{  color: '#fff', height: '40px', fontSize: 40 }}/>
                         </Nav.Header>
-                        {/* åŠŸèƒ½é”® */}
+                        {/* ¹¦ÄÜ?? */}
                         <span
                             style={{
                                 color: 'var(--semi-color-text-2)',
@@ -1132,10 +1154,10 @@ const App = () => {
                                     // fontFamily: 'Arial',
                                 }}
                             >
-                               æ™ºèƒ½OCR
+                               ÖÇÄÜOCR
                             </span>
                         </span>
-                        {/* åéƒ¨åŠŸèƒ½é”® */}
+                        {/* ºó²¿¹¦ÄÜ?? */}
                         <Nav.Footer>
                             <Button
                                 theme="borderless"
@@ -1160,7 +1182,7 @@ const App = () => {
                 </div>
             </Header>
 
-            {/* å†…å®¹é¡µ */}
+            {/* ÄÚ???Ò³ */}
             <Content
                     style={{
                         padding: '2px',
@@ -1170,7 +1192,7 @@ const App = () => {
                     }}
                 >
                    {/* <div style={{height: '100%', width: '100%'}}> */}
-                     {/* å±•ç¤ºåŒºåŸŸ */}
+                     {/* Õ¹Ê¾ÇøÓò */}
                     <div
                         style={{
                             // borderRadius: '10px',
@@ -1182,41 +1204,41 @@ const App = () => {
                             position: 'relative',
                         }}
                     >
-                        {/* ä¸­é—´åˆ†ç•Œçº¿ */}
+                        {/* ??¼ä·Ö½çÏß */}
                         <div
                             style={{
                                 position: 'absolute',
                                 top: '0',
-                                left: '50%', // åœ¨å·¦å³å¯¹åŠåˆ†
+                                left: '50%', // ÔÚ×óÓÒ???°ë??
                                 height: '100%',
-                                width: '2px',// åˆ†ç•Œçº¿å®½åº¦
-                                backgroundColor: 'transparent', // å°†å®çº¿æ”¹ä¸ºé€æ˜
-                                borderLeft: '2px dashed grey', // ä½¿ç”¨è™šçº¿æ ·å¼
-                                zIndex: '1', // ç¡®ä¿è™šçº¿åœ¨å…¶ä»–å†…å®¹ä¸Šæ–¹
+                                width: '2px',// ·Ö½çÏß???¶È
+                                backgroundColor: 'transparent', // ½«ÊµÏß¸ÄÎªÍ¸Ã÷
+                                borderLeft: '2px dashed grey', // Ê¹ÓÃĞéÏßÑùÊ½
+                                zIndex: '1', // ??±£ĞéÏßÔÚÆäËûÄÚ???ÉÏ??
                             }}
                         />
 
 
-                        {/* å›¾ç‰‡ */}
+                        {/* Í¼Æ¬ */}
                         <div
                             style={{
-                                width: '50%', // å·¦å³å¯¹åŠ
-                                height: '100%', // å®Œå…¨å¡«å……çˆ¶å®¹å™¨
-                                display: 'inline-block', // è¡Œå†…å—çº§å…ƒç´ 
-                                verticalAlign: 'top', // é¡¶éƒ¨å¯¹é½
+                                width: '50%', // ×óÓÒ¶Ô°ë
+                                height: '100%', // ÍêÈ«??³ä¸¸ÈİÆ÷
+                                display: 'inline-block', // ĞĞÄÚ¿é¼¶ÔªËØ
+                                verticalAlign: 'top', // ¶¥²¿¶ÔÆë
                             }}
                         >
 
-                            {/* å›¾ç‰‡åŒº */}
+                            {/* Í¼Æ¬?? */}
                             <div
                                 style={{
                                     position: 'absolute',
                                     top: '0',
                                     left: '0',
                                     width: '50%',
-                                    height: '100%', // ä¸Šéƒ¨åˆ†å æ¯”9
-                                    backgroundColor: 'white', // æ·»åŠ åˆ†ç•Œçº¿
-                                    overflow: 'auto', // æ·»åŠ æ»šåŠ¨æ¡
+                                    height: '100%', // ÉÏ²¿·ÖÕ¼??9
+                                    backgroundColor: 'white', // Ìí¼Ó·Ö½ç??
+                                    overflow: 'auto', // Ìí¼Ó¹ö¶¯??
                                 }}
                                 ref={imageRef}
                             >
@@ -1229,28 +1251,28 @@ const App = () => {
                                         justifyContent: 'center',
                                         fontSize: '100px',
                                         color: 'gray',
-                                        height: '100%', // è®¾ç½®é«˜åº¦ä¸ºè§†å£çš„é«˜åº¦
+                                        height: '100%', // ÉèÖÃ¸ß¶ÈÎª???¿ÚµÄ¸ß??
                                     }}
                                 >
                                     <IconImage size='extra large' />
-                                    <p style={{ fontSize: '32px', marginBottom: '10px' }}>å›¾ç‰‡æ˜¾ç¤ºåŒºåŸŸ</p>
-                                    <p style={{ fontSize: '32px', marginTop: '0' }}>ç‚¹å‡»ä¸‹æ–¹æ·»åŠ æŒ‰é”®æ·»åŠ å›¾ç‰‡</p>
+                                    <p style={{ fontSize: '32px', marginBottom: '10px' }}>Í¼Æ¬ÏÔÊ¾ÇøÓò</p>
+                                    <p style={{ fontSize: '32px', marginTop: '0' }}>µã»÷ÏÂ·½Ìí¼Ó°´¼üÌí¼ÓÍ¼Æ¬</p>
                                 </div>
                                     ) : null}
                                 <canvas ref={canvasRef} className='image'  onClick={(e) => highLight(e)} />
                             </div>
                         </div>
 
-                        {/* ç‰ˆé¢è¿˜åŸ */}
+                        {/* °æÃæ»¹Ô­ */}
                         <div
                             style={{
-                                width: '50%', // å·¦å³å¯¹åŠ
-                                height: '100%', // å®Œå…¨å¡«å……çˆ¶å®¹å™¨
-                                display: 'inline-block', // è¡Œå†…å—çº§å…ƒç´ 
-                                verticalAlign: 'top', // é¡¶éƒ¨å¯¹é½
+                                width: '50%', // ×óÓÒ¶Ô°ë
+                                height: '100%', // ÍêÈ«??³ä¸¸ÈİÆ÷
+                                display: 'inline-block', // ĞĞÄÚ¿é¼¶ÔªËØ
+                                verticalAlign: 'top', // ¶¥²¿¶ÔÆë
                             }}
                         >
-                            {/* ç‰ˆé¢è¿˜åŸåŒº */}
+                            {/* °æÃæ»¹Ô­?? */}
                             {!currentOcr ?(
                                 currentIndex === -1?(<div
                                     style={{
@@ -1260,12 +1282,12 @@ const App = () => {
                                         justifyContent: 'center',
                                         fontSize: '100px',
                                         color: 'gray',
-                                        height: '100%', // è®¾ç½®é«˜åº¦ä¸ºè§†å£çš„é«˜åº¦
+                                        height: '100%', // ÉèÖÃ¸ß¶ÈÎª???¿ÚµÄ¸ß??
                                     }}
                                 >
                                     <IconArticle size='extra large' />  
-                                    <p style={{ fontSize: '32px',  marginBottom: '10px' }}>è¯†åˆ«è¿˜åŸåŒºåŸŸ</p>
-                                    <p style={{ fontSize: '32px', marginTop: '0'}}>é’ˆå¯¹è¯†åˆ«ç»“æœå‡†ç¡®è¿˜åŸ</p>
+                                    <p style={{ fontSize: '32px',  marginBottom: '10px' }}>Ê¶±ğ»¹Ô­ÇøÓò</p>
+                                    <p style={{ fontSize: '32px', marginTop: '0'}}>Õë???Ê¶??½á¹û×¼È·»¹Ô­</p>
                                 </div>):(<div
                                     style={{
                                         position: 'absolute',
@@ -1274,10 +1296,10 @@ const App = () => {
                                         left: '50.6%',
                                         right: '-5px',
                                         width: '49%',
-                                        height: '100%', // ä¸Šéƒ¨åˆ†å æ¯”9
-                                        overflow: 'auto', // æ·»åŠ æ»šåŠ¨æ¡
-                                        outline: 'none', // å»é™¤é»˜è®¤çš„èšç„¦è¾¹æ¡†
-                                        // backgroundColor: 'white', // æ·»åŠ åˆ†ç•Œçº¿
+                                        height: '100%', // ÉÏ²¿·ÖÕ¼??9
+                                        overflow: 'auto', // Ìí¼Ó¹ö¶¯??
+                                        outline: 'none', // È¥³ıÄ¬???µÄ¾Û½¹±ß???
+                                        // backgroundColor: 'white', // Ìí¼Ó·Ö½ç??
                                     }}
                                     id="demo"
                                     ref={editableRef}
@@ -1286,7 +1308,7 @@ const App = () => {
                                     dangerouslySetInnerHTML={{ __html: htmlContent }}
                                 >
                                 </div>)) : (
-                                // è¯†åˆ«ä¸­çŠ¶æ€
+                                // Ê¶±ğ??×´??
                                 <div
                                     style={{
                                         position: 'absolute',
@@ -1302,24 +1324,24 @@ const App = () => {
                                         outline: 'none',
                                     }}
                                 >
-                                    <Spin tip="è¯†åˆ«ä¸­" spinning={true}>
+                                    <Spin tip="Ê¶±ğ??" spinning={true}>
                                     </Spin>
                                 </div>
                             )}
                         </div>
-                         {/* æŒ‰é”®åŒº */}
+                         {/* °´¼ü?? */}
                         <Draggable
                             onDrag={handleDrag3}
                         >
                             <Card 
                                 shadows='always'
                                 style={{ maxWidth: 1000,
-                                    position: 'absolute', // ä½¿ç”¨ç»å¯¹å®šä½
-                                    left: '25%', // å°†å†…å±‚ div çš„å·¦è¾¹ç¼˜æ”¾åœ¨å¤–å±‚ div çš„ä¸­é—´----æµ‹è¯•å‡ºæ¥çš„20%
+                                    position: 'absolute', // Ê¹ÓÃ¾ø???¶¨??
+                                    left: '25%', // ½«ÄÚ?? div µÄ×ó±ßÔµ·ÅÔÚÍâ²ã div µÄÖĞ??----²âÊÔ³öÀ´??20%
                                     width:'50%',
-                                    bottom: '0', // å°†å†…å±‚ div çš„åº•éƒ¨æ”¾ç½®äºå¤–å±‚ div çš„åº•éƒ¨
-                                    transform: 'translate(50%)', // ä½¿ç”¨ transform å±æ€§ä½¿å†…å±‚ div æ°´å¹³å±…ä¸­
-                                    zIndex: '999', // å°† z-index è®¾ç½®ä¸ºè¾ƒé«˜çš„å€¼
+                                    bottom: '0', // ½«ÄÚ?? div µÄµ×²¿·Å??ÓÚ???²ã div µÄµ×??
+                                    transform: 'translate(50%)', // Ê¹ÓÃ transform ÊôĞÔÊ¹ÄÚ²ã div Ë®Æ½¾ÓÖĞ
+                                    zIndex: '999', // ?? z-index ÉèÖÃÎª½Ï¸ßµÄ??
                                 }} 
                                 bodyStyle={{ 
                                     display: 'flex',
@@ -1329,22 +1351,22 @@ const App = () => {
                                     
                                 }}
                             >
-                                <Tooltip title='é«˜äº®æ–‡æœ¬è¾¹æ¡†' arrow>
+                                <Tooltip title='¸ßÁÁÎÄ±¾±ß???' arrow>
                                     <Button type="secondary"onClick={resetMode1} style={{backgroundColor:'white'}}><div style={{fontSize: '25px'}}><IconFontColor size='extra large' /></div></Button>
                                 </Tooltip>
-                                <Tooltip title='é«˜äº®æ–‡æœ¬çŸ©å½¢' arrow>
-                                    <Button type="secondary"onClick={resetMode2} title='é«˜äº®æ–‡æœ¬çŸ©å½¢' style={{backgroundColor:'white'}}><div style={{fontSize: '25px'}}><IconMark size='extra large' /></div></Button>
+                                <Tooltip title='¸ßÁÁÎÄ±¾¾ØĞÎ' arrow>
+                                    <Button type="secondary"onClick={resetMode2} title='¸ßÁÁÎÄ±¾¾ØĞÎ' style={{backgroundColor:'white'}}><div style={{fontSize: '25px'}}><IconMark size='extra large' /></div></Button>
                                 </Tooltip>
-                                <Tooltip title='æ·»åŠ æ–°çš„æ–‡æœ¬ä¿¡æ¯' arrow>
-                                    <Button type="secondary"onClick={handleAdd} title='æ·»åŠ æ–°çš„æ–‡æœ¬ä¿¡æ¯' style={{backgroundColor:'white'}}><div style={{fontSize: '25px'}}><IconPlus size='extra large' /></div></Button>
+                                <Tooltip title='Ìí¼ÓĞÂµÄÎÄ±¾ĞÅÏ¢' arrow>
+                                    <Button type="secondary"onClick={handleAdd} title='Ìí¼ÓĞÂµÄÎÄ±¾ĞÅÏ¢' style={{backgroundColor:'white'}}><div style={{fontSize: '25px'}}><IconPlus size='extra large' /></div></Button>
                                 </Tooltip>
-                                {/* <Tooltip title='ç½®ä¿¡åº¦é˜ˆå€¼:0-1ä¹‹é—´' arrow  
+                                {/* <Tooltip title='??ĞÅ¶ÈãĞ??:0-1Ö®¼ä' arrow  
                                         onMouseDown={(e) => e.stopPropagation()}
                                         onTouchStart={(e) => e.stopPropagation()}>
                                     <input
                                         id="inputValue"
                                         defaultValue=""
-                                        // placeholder="ç½®ä¿¡åº¦é˜ˆå€¼:0-1ä¹‹é—´"
+                                        // placeholder="??ĞÅ¶ÈãĞ??:0-1Ö®¼ä"
                                         type="text"
                                         className="placeholder-style"
                                         style={{
@@ -1362,23 +1384,23 @@ const App = () => {
                                 </Tooltip> */}
                                 <div style={{ width: 200, marginRight: 15 }} onMouseDown={(e) => e.stopPropagation()}
                                         onTouchStart={(e) => e.stopPropagation()}>
-                                        <Slider tipFormatter={v => (`ç½®ä¿¡åº¦${v}%`)} getAriaValueText={v => (`${v}%`)} onChange={value=>setconfidenceThres(value/100)}/>
+                                        <Slider tipFormatter={v => (`??ĞÅ¶È${v}%`)} getAriaValueText={v => (`${v}%`)} onChange={value=>setconfidenceThres(value/100)}/>
                                 </div>
-                                <Tooltip title='ç½®ä¿¡åº¦é˜ˆå€¼:0-1ä¹‹é—´' arrow>
+                                <Tooltip title='??ĞÅ¶ÈãĞ??:0-1Ö®¼ä' arrow>
                                 <InputNumber onChange={(v) => setconfidenceThres(v/100)} style={{ width: 100 }} value={confidenceThres*100} min={0} max={100} />
                                 </Tooltip>
                                 
-                                <Tooltip title='å¯¼å‡ºä¸ºpng/jpg' arrow>
-                                    <Button type="secondary" onClick={downloadPDFFile} style={{ marginLeft: '100px', backgroundColor:'white'}}>
+                                <Tooltip title='µ¼³öÎªpng/jpg' arrow>
+                                    <Button type="secondary" onClick={downloadImgFile} style={{ marginLeft: '100px', backgroundColor:'white'}}>
                                         <div style={{fontSize: '25px'}}><FileImageOutlined /></div>
                                     </Button>
                                 </Tooltip>
-                                <Tooltip title='å¯¼å‡ºä¸ºpdf' arrow>
+                                <Tooltip title='µ¼³öÎªpdf' arrow>
                                     <Button type="secondary"onClick={downloadPDFFile} style={{backgroundColor:'white'}}>
                                         <div style={{fontSize: '25px'}}><FilePdfOutlined /></div>
                                     </Button>
                                 </Tooltip>
-                                <Tooltip title='å¯¼å‡ºä¸ºpdf' arrow>
+                                <Tooltip title='µ¼³öÎªpdf' arrow>
                                     <Button type="secondary"onClick={downloadPDFFile} style={{backgroundColor:'white'}}>
                                         <div style={{fontSize: '25px'}}><FileWordOutlined /></div>
                                     </Button>
@@ -1388,7 +1410,7 @@ const App = () => {
                         </div>
                         
                    
-                    {/* ä¸Šä¼ /ç‚¹å‡»å›¾ç‰‡åŒºåŸŸ */}
+                    {/* ÉÏ´«/µã»÷Í¼Æ¬ÇøÓò */}
                     
                     <div
                         style={{
@@ -1396,21 +1418,21 @@ const App = () => {
                             border: '1px solid var(--semi-color-border)',
                             height: '18%',
                             padding: '2px 15px',
-                            paddingLeft: '20px', // å·¦è¾¹è·
-                            paddingRight: '20px', // å³è¾¹è·
+                            paddingLeft: '20px', // ×ó±ß??
+                            paddingRight: '20px', // ÓÒ±ß??
                             backgroundColor: 'white'
                         }}
                     >
                         <div
                             style={{
-                                flex: '9', // ä¸Šéƒ¨åˆ†å æ¯”9
-                                backgroundColor: 'white', // ä¸Šéƒ¨åˆ†é€æ˜
+                                flex: '9', // ÉÏ²¿·ÖÕ¼??9
+                                backgroundColor: 'white', // ÉÏ²¿·ÖÍ¸Ã÷
                                 // display: 'flex', 
                                 // alignItems: 'center',
                             }}
                         >
-                            {/* ä¸Šéƒ¨åˆ†å†…å®¹ */}
-                            <Spin tip="ä¸Šä¼ ä¸­..." spinning = {isUpload}>
+                            {/* ÉÏ²¿·ÖÄÚ?? */}
+                            <Spin tip="ÉÏ´«??..." spinning = {isUpload}>
                                 <Upload 
                                     action='https://api.semi.design/upload'
                                     listType="picture" 
@@ -1433,7 +1455,7 @@ const App = () => {
                    {/* </div> */}
 
             </Content>
-           {/* å°¾éƒ¨å¸ƒå±€ */}
+           {/* Î²²¿²¼¾Ö */}
             <Footer
                 style={{
                     // position: 'fixed',
@@ -1443,7 +1465,7 @@ const App = () => {
                     display: 'flex',
                     justifyContent: 'space-between',
                     padding: '20px',
-                    alignItems: 'center', // å‚ç›´å±…ä¸­
+                    alignItems: 'center', // ´¹Ö±¾ÓÖĞ
                     color: 'var(--semi-color-text-2)',
                     backgroundColor: 'rgba(var(--semi-grey-0), 1)',
                 }}
@@ -1458,12 +1480,12 @@ const App = () => {
                     <span> created by Yz&SS </span>
                 </span>
                 <span>
-                    <span style={{ marginRight: '24px' }}>å¹³å°å®¢æœ</span>
-                    <span>åé¦ˆå»ºè®®</span>
+                    <span style={{ marginRight: '24px' }}>Æ½Ì¨¿Í·ş</span>
+                    <span>·´???½¨??</span>
                 </span>
             </Footer>
 
-            {/* é—®ç­”åŠŸèƒ½çš„æ‚¬æµ®æŒ‰é’® */}
+            {/* ??´ğ¹¦ÄÜµÄ????°´Å¥ */}
             <Draggable
                 defaultPosition={questionPosition}
                 onDrag={handleDrag2}
@@ -1472,10 +1494,10 @@ const App = () => {
             >
                 <div style={{ 
                     cursor: 'move', 
-                    // é—®ç­”åŠŸèƒ½ä¸è®¾ç½®åœ¨æœ€é¡¶éƒ¨
+                    // ??´ğ¹¦ÄÜ²»ÉèÖÃÔÚ×î¶¥²¿
                     // zIndex:9999, 
                     }}>
-                {/* <Tooltip title='é—®ç­”æœåŠ¡' arrow placement='left' > */}
+                {/* <Tooltip title='??´ğ·ş??' arrow placement='left' > */}
                     <FloatButton.Group 
                         onClick={change}
                         trigger='click'
@@ -1490,30 +1512,30 @@ const App = () => {
                 </div>
             </Draggable>
             
-            {/* ä¿®æ”¹çª—å£ */}
-            {/* å›ºå®šé«˜åº¦ */}
-            <SideSheet title="ä¿®æ”¹" visible={visible} onCancel={handleCancel} placement='bottom' height={600}>
-                {/* æ–‡å­—å’Œå…¬å¼ */}
+            {/* ??¸Ä´°?? */}
+            {/* ¹Ì¶¨¸ß¶È */}
+            <SideSheet title="????" visible={visible} onCancel={handleCancel} placement='bottom' height={600}>
+                {/* ÎÄ×ÖºÍ¹«?? */}
                 {visible && ocrData[highlightIndex].type != 'table'&&(
                     <div style={{ display: 'flex',  height:'85%', width:'100%'}}>
                     <div style={{display: 'flex',  height:'85%', width:'90%', alignItems: 'center', justifyContent: 'center',}}>
-                         {/* æ–‡å­—æ ‡é¢˜æ˜¾ç¤ºåŒºåŸŸ */}
+                         {/* ÎÄ×Ö±ê???ÏÔÊ¾Çø?? */}
                          <div style={{ height: '100%', width: '15%', }}>
                              <div style={{height:'50%', alignItems: 'center', justifyContent: 'center',}}>
-                                 <p style={{marginLeft:'20px', color: 'black', fontSize: '17px', height: '50%', padding: '10px 0 0 0', margin: '0', }}>å›¾ç‰‡å†…å®¹ï¼š</p>
+                                 <p style={{marginLeft:'20px', color: 'black', fontSize: '17px', height: '50%', padding: '10px 0 0 0', margin: '0', }}>Í¼Æ¬ÄÚ???£º</p>
                              </div>
                              {currentIndex != -1 && highlightIndex != -1? (
                                      <div style={{height:'50%', alignItems: 'center', justifyContent: 'center',}}>
-                                     <p style={{marginLeft:'20px',  color: 'black', fontSize: '17px', height: '50%', padding: '10px 0 0 0', margin: '0', }}>Latexæ¸²æŸ“ï¼š</p>
+                                     <p style={{marginLeft:'20px',  color: 'black', fontSize: '17px', height: '50%', padding: '10px 0 0 0', margin: '0', }}>LatexäÖÈ¾??</p>
                                  </div>
                                      ) :
                                      null}
                              
                              <div style={{height:'50%', alignItems: 'center', justifyContent: 'center',}}>
-                                 <p style={{marginLeft:'20px',  color: 'black', fontSize: '17px', height: '50%', padding: '10px 0 0 0', margin: '0', }}>è¯†åˆ«æ–‡æœ¬ï¼š</p>
+                                 <p style={{marginLeft:'20px',  color: 'black', fontSize: '17px', height: '50%', padding: '10px 0 0 0', margin: '0', }}>Ê¶±ğÎÄ±¾??</p>
                              </div>
                          </div>
-                         {/* å›¾ç‰‡+è¾“å…¥æ–‡æœ¬æ¡† */}
+                         {/* Í¼Æ¬+ÊäÈëÎÄ±¾?? */}
                          <div style={{height: '100%', width: '70%', alignItems: 'center', justifyContent: 'center',}}>
                              <div style={{height:'50%', alignItems: 'center', justifyContent: 'center',}}>
                                      <div
@@ -1532,14 +1554,14 @@ const App = () => {
                                      ) :
                                      null}
                              <div style={{height:'50%', alignItems: 'center', justifyContent: 'center',}}>
-                                 {/* å•è¡Œè¾“å…¥æ¡† */}
+                                 {/* µ¥???ÊäÈë??? */}
                                  {/* <input id='modified' type="text" className="ocr-input" value={text} onChange={handleSelectionChange} style={{ width: '600px', fontSize:'16px', height:'28px', outline: 'none' }}/> */}
-                                 {/* å¤šè¡Œè¾“å…¥æ¡† */}
+                                 {/* ¶à???ÊäÈë??? */}
                                  <textarea id="modified" className="ocr-input" value={text} onChange={handleSelectionChange} style={{ width: '90%', fontSize:'16px', outline: 'none' }} rows={4} />
                              </div>
                          </div>
                      </div>
-                     {/* æŒ‰é”®åŒº */}
+                     {/* °´¼ü?? */}
                      <div style={{ display: 'flex', bottom: '0', width: '10%', flexDirection: 'column',}}>
                          <div style={{height: '82%',}}></div>
                          <div style={{ height: '18%',}}>
@@ -1547,40 +1569,40 @@ const App = () => {
                                  onClick={() => handleDec()}
                                  style={{
                                      margin: '10px 40px',
-                                     fontSize: '20px', // å¢å¤§æ–‡æœ¬å¤§å°
-                                     padding: '15px 15px', // è°ƒæ•´æŒ‰é’®å°ºå¯¸
+                                     fontSize: '20px', // Ôö´óÎÄ±¾´óĞ¡
+                                     padding: '15px 15px', // µ÷Õû°´Å¥³ß???
                                      color: '#fff',
                                      borderColor: '#2e6ff6',
                                      background: '#2e6ff6',
                                      textShadow: '0 -1px 0 rgba(0,0,0,.12)',
                                      boxShadow: '0 2px rgba(0,0,0,.043)',
-                                     alignSelf: 'flex-end', // å°†æŒ‰é’®å¯¹é½åˆ°å³ä¾§
-                                 }}>åˆ é™¤</Button>
+                                     alignSelf: 'flex-end', // ½«°´??¶ÔÆëµ½ÓÒ??
+                                 }}>É¾³ı</Button>
  
                              <Button
                                  onClick={() => handleOk()}
                                  style={{
                                      margin: '10px 40px',
-                                     fontSize: '20px', // å¢å¤§æ–‡æœ¬å¤§å°
-                                     padding: '15px 15px', // è°ƒæ•´æŒ‰é’®å°ºå¯¸
+                                     fontSize: '20px', // Ôö´óÎÄ±¾´óĞ¡
+                                     padding: '15px 15px', // µ÷Õû°´Å¥³ß???
                                      color: '#fff',
                                      borderColor: '#2e6ff6',
                                      background: '#2e6ff6',
                                      textShadow: '0 -1px 0 rgba(0,0,0,.12)',
                                      boxShadow: '0 2px rgba(0,0,0,.043)',
-                                     alignSelf: 'flex-end', // å°†æŒ‰é’®å¯¹é½åˆ°å³ä¾§
-                                 }}>ä¿®æ”¹</Button>
+                                     alignSelf: 'flex-end', // ½«°´??¶ÔÆëµ½ÓÒ??
+                                 }}>????</Button>
                          </div>
                      </div>               
                  </div>
                 )}
-                {/* è¡¨æ ¼ */}
+                {/* ±í¸ñ */}
                 {visible && ocrData[highlightIndex].type === 'table'&&(
-                    // æ€»çš„åŒºåŸŸ
+                    // ×ÜµÄÇøÓò
                     <div style={{display: 'flex', height: '95%', width:'100%'}}>
-                        {/* å·¦ä¾§æ˜¾ç¤ºåŸå›¾ç‰‡ */}
+                        {/* ×ó²àÏÔÊ¾Ô­Í¼?? */}
                         <div style={{height: '100%', width:'45%'}}>
-                            <p style={{marginLeft:'20px', color: 'black', fontSize: '17px', height:'10%', padding: '10px 0 0 0', margin: '0', }}>å›¾ç‰‡å†…å®¹ï¼š</p>
+                            <p style={{marginLeft:'20px', color: 'black', fontSize: '17px', height:'10%', padding: '10px 0 0 0', margin: '0', }}>Í¼Æ¬ÄÚ???£º</p>
                             <div style={{height:'90%', alignItems: 'center', justifyContent: 'center',}}>
                                 <div
                                     id="show-part-picture" 
@@ -1589,9 +1611,9 @@ const App = () => {
                                 </div>          
                             </div>
                         </div>
-                        {/* å³ä¾§æ˜¾ç¤ºæ¸²æŸ“è¡¨æ ¼ */}
+                        {/* ÓÒ²àÏÔÊ¾äÖÈ¾±í¸ñ */}
                         <div style={{height: '100%', width:'45%'}}>
-                            <p style={{marginLeft:'20px', color: 'black', fontSize: '17px', height:'10%', padding: '10px 0 0 0', margin: '0', }}>è¡¨æ ¼æ¸²æŸ“ï¼š</p>
+                            <p style={{marginLeft:'20px', color: 'black', fontSize: '17px', height:'10%', padding: '10px 0 0 0', margin: '0', }}>±í¸ñäÖÈ¾??</p>
                             <div style={{height:'90%', alignItems: 'center', justifyContent: 'center',}}>
                                  <div
                                     ref={tableEditableRef}
@@ -1601,71 +1623,71 @@ const App = () => {
                                 ></div>
                             </div>
                         </div>
-                        {/* æœ€å³ä¾§æ˜¾ç¤ºæŒ‰é’® */}
+                        {/* ×îÓÒ²àÏÔÊ¾°´Å¥ */}
                         <div style={{height: '100%', width:'10%'}}>
                             <div style={{height: '60%',}}></div>
                             <div style={{height: '40%'}}>
-                                {/* è¿™é‡Œæ·»åŠ ä½ è¦çš„å¢åŠ è¡Œï¼Œåˆ—ï¼Œåˆ é™¤è¡Œã€åˆ—çš„æŒ‰é’® */}
+                                {/* ÕâÀïÌí¼ÓÄã???µÄÔö¼ÓĞĞ£¬ÁĞ£¬É¾³ıĞĞ¡¢ÁĞµÄ°´?? */}
                                 <Button
                                     onClick={()=>{setHtmlContent_table(addRow(htmlContent_table))}}
                                     style={{
                                         margin: '10px 40px',
-                                        fontSize: '20px', // å¢å¤§æ–‡æœ¬å¤§å°
-                                        padding: '15px 15px', // è°ƒæ•´æŒ‰é’®å°ºå¯¸
+                                        fontSize: '20px', // Ôö´óÎÄ±¾´óĞ¡
+                                        padding: '15px 15px', // µ÷Õû°´Å¥³ß???
                                         color: '#fff',
                                         borderColor: '#2e6ff6',
                                         background: '#2e6ff6',
                                         textShadow: '0 -1px 0 rgba(0,0,0,.12)',
                                         boxShadow: '0 2px rgba(0,0,0,.043)',
-                                        alignSelf: 'flex-end', // å°†æŒ‰é’®å¯¹é½åˆ°å³ä¾§
-                                    }}>åŠ è¡Œ</Button>
+                                        alignSelf: 'flex-end', // ½«°´??¶ÔÆëµ½ÓÒ??
+                                    }}>¼Ó???</Button>
                                 <Button
                                     onClick={()=>{setHtmlContent_table(addColumn(htmlContent_table))}}
                                     style={{
                                         margin: '10px 40px',
-                                        fontSize: '20px', // å¢å¤§æ–‡æœ¬å¤§å°
-                                        padding: '15px 15px', // è°ƒæ•´æŒ‰é’®å°ºå¯¸
+                                        fontSize: '20px', // Ôö´óÎÄ±¾´óĞ¡
+                                        padding: '15px 15px', // µ÷Õû°´Å¥³ß???
                                         color: '#fff',
                                         borderColor: '#2e6ff6',
                                         background: '#2e6ff6',
                                         textShadow: '0 -1px 0 rgba(0,0,0,.12)',
                                         boxShadow: '0 2px rgba(0,0,0,.043)',
-                                        alignSelf: 'flex-end', // å°†æŒ‰é’®å¯¹é½åˆ°å³ä¾§
-                                    }}>åŠ åˆ—</Button>
+                                        alignSelf: 'flex-end', // ½«°´??¶ÔÆëµ½ÓÒ??
+                                    }}>¼ÓÁĞ</Button>
                                 <Button
                                     onClick={() => handleDec()}
                                     style={{
                                         margin: '10px 40px',
-                                        fontSize: '20px', // å¢å¤§æ–‡æœ¬å¤§å°
-                                        padding: '15px 15px', // è°ƒæ•´æŒ‰é’®å°ºå¯¸
+                                        fontSize: '20px', // Ôö´óÎÄ±¾´óĞ¡
+                                        padding: '15px 15px', // µ÷Õû°´Å¥³ß???
                                         color: '#fff',
                                         borderColor: '#2e6ff6',
                                         background: '#2e6ff6',
                                         textShadow: '0 -1px 0 rgba(0,0,0,.12)',
                                         boxShadow: '0 2px rgba(0,0,0,.043)',
-                                        alignSelf: 'flex-end', // å°†æŒ‰é’®å¯¹é½åˆ°å³ä¾§
-                                    }}>åˆ é™¤</Button>
+                                        alignSelf: 'flex-end', // ½«°´??¶ÔÆëµ½ÓÒ??
+                                    }}>É¾³ı</Button>
 
                                 <Button
                                     onClick={() => handleOk()}
                                     style={{
                                         margin: '10px 40px',
-                                        fontSize: '20px', // å¢å¤§æ–‡æœ¬å¤§å°
-                                        padding: '15px 15px', // è°ƒæ•´æŒ‰é’®å°ºå¯¸
+                                        fontSize: '20px', // Ôö´óÎÄ±¾´óĞ¡
+                                        padding: '15px 15px', // µ÷Õû°´Å¥³ß???
                                         color: '#fff',
                                         borderColor: '#2e6ff6',
                                         background: '#2e6ff6',
                                         textShadow: '0 -1px 0 rgba(0,0,0,.12)',
                                         boxShadow: '0 2px rgba(0,0,0,.043)',
-                                        alignSelf: 'flex-end', // å°†æŒ‰é’®å¯¹é½åˆ°å³ä¾§
-                                    }}>ä¿®æ”¹</Button>
+                                        alignSelf: 'flex-end', // ½«°´??¶ÔÆëµ½ÓÒ??
+                                    }}>????</Button>
                             </div>
                         </div>
                     </div>
                 )}
 
             </SideSheet>
-           {/* å…¬å¼ç¬¦å·è¾“å…¥æç¤ºçš„æ‚¬æµ®æŒ‰é’®----å¯æ‹–åŠ¨ */}
+           {/* ??Ê½???ºÅÊäÈëÌáÊ¾µÄĞü??°´Å¥----??ÍÏ¶¯ */}
            {visible &&ocrData[highlightIndex].type != 'table'&& (
                 <Draggable defaultPosition={formulaPosition} onDrag={handleDrag1}>
                     <div style={{ cursor: 'move', zIndex: 9999 }}>
@@ -1673,11 +1695,11 @@ const App = () => {
                     </div>
                 </Draggable>
             )}
-            {/* é—®ç­”åŠŸèƒ½çª—å£ */}
-            <SideSheet title="é—®ç­”åŠŸèƒ½" visible={chatVisible} onCancel={change} style={{width:'30%', height:'100%'}}>
+            {/* ??´ğ¹¦ÄÜ´°?? */}
+            <SideSheet title="??´ğ¹¦??" visible={chatVisible} onCancel={change} style={{width:'30%', height:'100%'}}>
                 <ChatBox messages={messages} setMessages={setMessages} data={dataList} />
             </SideSheet>
-            {/* æ·»åŠ æ–‡æœ¬çª—å£ */}
+            {/* Ìí¼ÓÎÄ±¾´°¿Ú */}
             {/* <Draggable
                 defaultPosition={annotatorPosition}
                 onDrag={handleDrag4}> */}
