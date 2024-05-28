@@ -820,10 +820,10 @@ const App = () => {
         const blob = await urlToBlob(url);
         formData.append('image', blob);
         try {
-            console.log("https://106.55.146.40:443/one-image")
+            console.log("https://ocr-web.c4chuan.cn//one-image")
             //  http://127.0.0.1:5000/upload
             // https://7916-211-83-127-29.ngrok-free.app/one-image
-            fetch('https://106.55.146.40:443/one-image', {
+            fetch('https://ocr-web.c4chuan.cn//ceshi', {
                 method: 'POST', 
                 body: formData,
                 mode: 'cors',
