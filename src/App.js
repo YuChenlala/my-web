@@ -826,7 +826,7 @@ const App = () => {
             fetch('https://ocr-web.c4chuan.cn//ceshi', {
                 method: 'POST', 
                 body: formData,
-                mode: 'cors',
+                mode: 'no-cors',
             })
             //解析后端返回数据
             .then(response => response.json())
