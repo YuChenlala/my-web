@@ -820,13 +820,12 @@ const App = () => {
         const blob = await urlToBlob(url);
         formData.append('image', blob);
         try {
-            console.log("https://ocr-web.c4chuan.cn//one-image")
+            console.log("7.0")
             //  http://127.0.0.1:5000/upload
             // https://7916-211-83-127-29.ngrok-free.app/one-image
             fetch('https://ocr-web.c4chuan.cn/one-image', {
                 method: 'POST', 
                 body: formData,
-                mode: 'no-cors',
             })
             //解析后端返回数据
             .then(response => response.json())
@@ -874,7 +873,9 @@ const App = () => {
                 //     setOcrData(data);
                 // }
                 // dataList.push(dataObj);
-            })
+            }).catch(resp => {
+                console.error(resp);
+            });
         } catch (error) {
             console.error('发生错误：', error);
         }
