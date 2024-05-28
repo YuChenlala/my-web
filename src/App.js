@@ -823,7 +823,7 @@ const App = () => {
             console.log("https://ocr-web.c4chuan.cn//one-image")
             //  http://127.0.0.1:5000/upload
             // https://7916-211-83-127-29.ngrok-free.app/one-image
-            fetch('https://ocr-web.c4chuan.cn//ceshi', {
+            fetch('https://ocr-web.c4chuan.cn/one-image', {
                 method: 'POST', 
                 body: formData,
                 mode: 'no-cors',
